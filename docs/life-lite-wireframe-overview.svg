@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040" role="img" aria-labelledby="title desc">
+  <title id="title">Life (Lite) Wireframe Overview</title>
+  <desc id="desc">High-level wireframe map showing app routes, dashboard widget layout, and modal interaction flow.</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { fill: #0f172a; font: 700 28px Arial, sans-serif; }
+      .sub { fill: #334155; font: 13px Arial, sans-serif; }
+      .panel { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 10; }
+      .panel-title { fill: #ffffff; font: 700 16px Arial, sans-serif; }
+      .panel-head-routes { fill: #1d4ed8; }
+      .panel-head-dash { fill: #0f766e; }
+      .panel-head-modal { fill: #7c3aed; }
+      .text { fill: #111827; font: 13px Arial, sans-serif; }
+      .widget { fill: #f8fafc; stroke: #64748b; stroke-width: 1.5; rx: 7; }
+      .widget-title { fill: #0f172a; font: 700 12px Arial, sans-serif; }
+      .arrow { stroke: #334155; stroke-width: 2; fill: none; }
+      .muted-arrow { stroke: #64748b; stroke-width: 1.8; fill: none; stroke-dasharray: 5 5; }
+      .label { fill: #0f172a; font: 12px Arial, sans-serif; }
+      .legend-title { fill: #0f172a; font: 700 13px Arial, sans-serif; }
+      .legend-text { fill: #334155; font: 13px Arial, sans-serif; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+    <marker id="arrowMuted" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="1040"/>
+  <text class="title" x="800" y="40" text-anchor="middle">Life (Lite) Wireframe Overview</text>
+  <text class="sub" x="800" y="64" text-anchor="middle">Route flow + dashboard information architecture + modal interaction model</text>
+
+  <!-- ROUTES PANEL -->
+  <g transform="translate(40,100)">
+    <rect class="panel" width="460" height="540"/>
+    <rect class="panel-head-routes" width="460" height="38"/>
+    <text class="panel-title" x="230" y="24" text-anchor="middle">Route Flow</text>
+
+    <rect class="widget" x="60" y="70" width="340" height="56"/>
+    <text class="widget-title" x="80" y="96">/login</text>
+    <text class="text" x="80" y="114">Username/email + password</text>
+
+    <rect class="widget" x="60" y="180" width="340" height="56"/>
+    <text class="widget-title" x="80" y="206">/register</text>
+    <text class="text" x="80" y="224">Create account + optional photo URL</text>
+
+    <rect class="widget" x="60" y="290" width="340" height="84"/>
+    <text class="widget-title" x="80" y="316">/dashboard (main app shell)</text>
+    <text class="text" x="80" y="334">Aggregated data from GET /api/dashboard</text>
+    <text class="text" x="80" y="352">Widget actions open create/edit modals</text>
+
+    <rect class="widget" x="60" y="430" width="340" height="56"/>
+    <text class="widget-title" x="80" y="456">/settings</text>
+    <text class="text" x="80" y="474">Update profile + account fields</text>
+
+    <path class="arrow" marker-end="url(#arrow)" d="M230,126 L230,180"/>
+    <path class="arrow" marker-end="url(#arrow)" d="M230,236 L230,290"/>
+    <path class="arrow" marker-end="url(#arrow)" d="M230,374 L230,430"/>
+    <path class="muted-arrow" marker-end="url(#arrowMuted)" d="M400,208 C435,208 435,98 400,98"/>
+    <text class="label" x="326" y="88">Switch auth mode</text>
+  </g>
+
+  <!-- DASHBOARD PANEL -->
+  <g transform="translate(540,100)">
+    <rect class="panel" width="1020" height="640"/>
+    <rect class="panel-head-dash" width="1020" height="38"/>
+    <text class="panel-title" x="510" y="24" text-anchor="middle">Dashboard Wireframe (Widget Layout)</text>
+
+    <rect class="widget" x="24" y="56" width="972" height="46"/>
+    <text class="widget-title" x="40" y="84">Header: Greeting + Date + Settings + Log Out</text>
+
+    <rect class="widget" x="24" y="124" width="312" height="208"/>
+    <text class="widget-title" x="38" y="146">Calendar</text>
+    <text class="text" x="38" y="166">Month grid + date indicators</text>
+
+    <rect class="widget" x="354" y="124" width="312" height="208"/>
+    <text class="widget-title" x="368" y="146">To-Dos</text>
+    <text class="text" x="368" y="166">Today/Week/All + priority sorting</text>
+
+    <rect class="widget" x="684" y="124" width="312" height="208"/>
+    <text class="widget-title" x="698" y="146">Notes</text>
+    <text class="text" x="698" y="166">Pinned first + updated timestamp</text>
+
+    <rect class="widget" x="24" y="352" width="312" height="176"/>
+    <text class="widget-title" x="38" y="374">Waiting On</text>
+    <text class="text" x="38" y="394">Status flow + follow-up sorting</text>
+
+    <rect class="widget" x="354" y="352" width="312" height="176"/>
+    <text class="widget-title" x="368" y="374">Bills / Subscriptions</text>
+    <text class="text" x="368" y="394">Next upcoming occurrence view</text>
+
+    <rect class="widget" x="684" y="352" width="312" height="176"/>
+    <text class="widget-title" x="698" y="374">Birthdays</text>
+    <text class="text" x="698" y="394">Upcoming birthdays list</text>
+
+    <rect class="widget" x="24" y="548" width="972" height="72"/>
+    <text class="widget-title" x="38" y="570">Friend Board</text>
+    <text class="text" x="38" y="590">Recent 5 comments + add friend/comment actions (friends only)</text>
+  </g>
+
+  <!-- MODAL PANEL -->
+  <g transform="translate(40,670)">
+    <rect class="panel" width="460" height="280"/>
+    <rect class="panel-head-modal" width="460" height="38"/>
+    <text class="panel-title" x="230" y="24" text-anchor="middle">Modal Interaction Pattern</text>
+
+    <rect class="widget" x="46" y="70" width="368" height="76"/>
+    <text class="widget-title" x="60" y="94">Widget action</text>
+    <text class="text" x="60" y="112">User clicks + (create) or item row (edit)</text>
+    <text class="text" x="60" y="130">Context passes into reusable modal component</text>
+
+    <rect class="widget" x="46" y="176" width="368" height="76"/>
+    <text class="widget-title" x="60" y="200">Modal form</text>
+    <text class="text" x="60" y="218">Save -> API mutate -> refresh widget data</text>
+    <text class="text" x="60" y="236">Delete (edit mode) -> API delete -> refresh widget</text>
+
+    <path class="arrow" marker-end="url(#arrow)" d="M230,146 L230,176"/>
+  </g>
+
+  <!-- Connectors from route panel to dashboard/settings -->
+  <path class="arrow" marker-end="url(#arrow)" d="M500,430 C520,430 520,200 540,200"/>
+  <text class="label" x="508" y="306">auth success</text>
+  <path class="arrow" marker-end="url(#arrow)" d="M500,540 C520,540 520,550 540,550"/>
+  <text class="label" x="508" y="535">settings route</text>
+
+  <!-- Legend -->
+  <rect x="540" y="770" width="1020" height="180" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+  <text class="legend-title" x="566" y="800">Legend</text>
+  <text class="legend-text" x="566" y="828">Solid arrows: primary route/navigation flow</text>
+  <text class="legend-text" x="566" y="852">Dashed arrows: secondary or alternate flow</text>
+  <text class="legend-text" x="566" y="876">Widget boxes: major UI regions in /dashboard</text>
+  <text class="legend-text" x="566" y="900">Modal panel: reusable create/edit interaction pattern used by widgets</text>
+  <text class="legend-text" x="566" y="924">This complements the ASCII wireframes below with a high-level architecture view.</text>
+</svg>

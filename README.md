@@ -236,6 +236,8 @@ Tickets will move through the following stages:
 The application will use a relational database (PostgreSQL) to store user data and all associated entities. Each primary feature is represented by its own table, with relationships defined through foreign keys.
 All user-generated data is scoped to the authenticated user via user_id.
 
+![Life (Lite) Database Schema ERD](docs/life-lite-database-schema-erd.svg)
+
 ### Core Tables
 #### Users
 Stores account and profile information.
@@ -501,6 +503,8 @@ Allows the logged-in user to retrieve and update their own profile/settings info
 ## Detailed Wireframe
 ### Overview
 The frontend will be structured around a small set of core pages, with the dashboard acting as the main application view after login. The UI is designed to feel calm, visually intuitive, and easy to scan, with a fixed layout and modal-based interactions for creating and editing data.
+
+![Life (Lite) Wireframe Overview](docs/life-lite-wireframe-overview.svg)
 
 ### Core Routes / Pages
 1. Landing / Login Page

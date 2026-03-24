@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1020" viewBox="0 0 1600 1020" role="img" aria-labelledby="title desc">
+  <title id="title">Life (Lite) Database Schema ERD</title>
+  <desc id="desc">Entity relationship diagram with explicit PK and FK notation and 1 to N relationship labels.</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .table { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 10; }
+      .head-users { fill: #1d4ed8; }
+      .head-core { fill: #0f766e; }
+      .head-social { fill: #7c3aed; }
+      .head-text { fill: #ffffff; font: 700 18px Arial, sans-serif; }
+      .cell { fill: #111827; font: 14px Arial, sans-serif; }
+      .title { fill: #0f172a; font: 700 28px Arial, sans-serif; }
+      .sub { fill: #334155; font: 13px Arial, sans-serif; }
+      .line-core { stroke: #0f766e; stroke-width: 2.5; fill: none; }
+      .line-social { stroke: #7c3aed; stroke-width: 2.5; fill: none; }
+      .rel { fill: #0f172a; font: 700 12px Arial, sans-serif; }
+      .legend-title { fill: #0f172a; font: 700 13px Arial, sans-serif; }
+      .legend-text { fill: #334155; font: 13px Arial, sans-serif; }
+    </style>
+    <marker id="arrowCore" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/>
+    </marker>
+    <marker id="arrowSocial" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="1020"/>
+  <text class="title" x="800" y="40" text-anchor="middle">Life (Lite) Database Schema - ERD</text>
+  <text class="sub" x="800" y="64" text-anchor="middle">PK = Primary Key, FK = Foreign Key, relationship labels use 1:N cardinality</text>
+
+  <!-- USERS -->
+  <g transform="translate(620,90)">
+    <rect class="table" width="360" height="230"/>
+    <rect class="head-users" width="360" height="42"/>
+    <text class="head-text" x="180" y="27" text-anchor="middle">users</text>
+    <text class="cell" x="16" y="66">id [PK]</text>
+    <text class="cell" x="16" y="88">username (unique)</text>
+    <text class="cell" x="16" y="110">first_name</text>
+    <text class="cell" x="16" y="132">email (unique)</text>
+    <text class="cell" x="16" y="154">password_hash</text>
+    <text class="cell" x="16" y="176">birthday</text>
+    <text class="cell" x="16" y="198">photo_url</text>
+    <text class="cell" x="16" y="220">created_at, updated_at</text>
+  </g>
+
+  <!-- Core row -->
+  <g transform="translate(60,390)">
+    <rect class="table" width="250" height="180"/>
+    <rect class="head-core" width="250" height="36"/>
+    <text class="head-text" x="125" y="24" text-anchor="middle">todos</text>
+    <text class="cell" x="14" y="60">id [PK]</text>
+    <text class="cell" x="14" y="82">user_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="104">title, description</text>
+    <text class="cell" x="14" y="126">due_date, priority</text>
+    <text class="cell" x="14" y="148">completed</text>
+    <text class="cell" x="14" y="170">created_at, updated_at</text>
+  </g>
+
+  <g transform="translate(360,390)">
+    <rect class="table" width="250" height="180"/>
+    <rect class="head-core" width="250" height="36"/>
+    <text class="head-text" x="125" y="24" text-anchor="middle">notes</text>
+    <text class="cell" x="14" y="60">id [PK]</text>
+    <text class="cell" x="14" y="82">user_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="104">content</text>
+    <text class="cell" x="14" y="126">is_pinned</text>
+    <text class="cell" x="14" y="148">created_at, updated_at</text>
+  </g>
+
+  <g transform="translate(660,390)">
+    <rect class="table" width="280" height="180"/>
+    <rect class="head-core" width="280" height="36"/>
+    <text class="head-text" x="140" y="24" text-anchor="middle">waiting_on</text>
+    <text class="cell" x="14" y="60">id [PK]</text>
+    <text class="cell" x="14" y="82">user_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="104">title, description</text>
+    <text class="cell" x="14" y="126">follow_up_date, priority</text>
+    <text class="cell" x="14" y="148">status</text>
+    <text class="cell" x="14" y="170">created_at, updated_at</text>
+  </g>
+
+  <g transform="translate(990,390)">
+    <rect class="table" width="250" height="180"/>
+    <rect class="head-core" width="250" height="36"/>
+    <text class="head-text" x="125" y="24" text-anchor="middle">bills</text>
+    <text class="cell" x="14" y="60">id [PK]</text>
+    <text class="cell" x="14" y="82">user_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="104">title, amount</text>
+    <text class="cell" x="14" y="126">due_month, due_day</text>
+    <text class="cell" x="14" y="148">recurrence</text>
+    <text class="cell" x="14" y="170">created_at, updated_at</text>
+  </g>
+
+  <g transform="translate(1290,390)">
+    <rect class="table" width="250" height="180"/>
+    <rect class="head-core" width="250" height="36"/>
+    <text class="head-text" x="125" y="24" text-anchor="middle">birthdays</text>
+    <text class="cell" x="14" y="60">id [PK]</text>
+    <text class="cell" x="14" y="82">user_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="104">name, date</text>
+    <text class="cell" x="14" y="126">created_at</text>
+  </g>
+
+  <!-- Social row -->
+  <g transform="translate(300,700)">
+    <rect class="table" width="420" height="200"/>
+    <rect class="head-social" width="420" height="36"/>
+    <text class="head-text" x="210" y="24" text-anchor="middle">friendships</text>
+    <text class="cell" x="14" y="60">id [PK]</text>
+    <text class="cell" x="14" y="82">requester_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="104">receiver_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="126">status (pending | accepted | declined)</text>
+    <text class="cell" x="14" y="148">created_at</text>
+    <text class="cell" x="14" y="170">updated_at</text>
+  </g>
+
+  <g transform="translate(860,700)">
+    <rect class="table" width="460" height="200"/>
+    <rect class="head-social" width="460" height="36"/>
+    <text class="head-text" x="230" y="24" text-anchor="middle">friend_board_comments</text>
+    <text class="cell" x="14" y="60">id [PK]</text>
+    <text class="cell" x="14" y="82">author_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="104">recipient_id [FK -> users.id]</text>
+    <text class="cell" x="14" y="126">content</text>
+    <text class="cell" x="14" y="148">created_at</text>
+    <text class="cell" x="14" y="170">updated_at</text>
+  </g>
+
+  <!-- Relationships: users -> core -->
+  <path class="line-core" marker-end="url(#arrowCore)" d="M700,320 C630,355 350,360 185,390"/>
+  <text class="rel" x="430" y="352">1:N</text>
+
+  <path class="line-core" marker-end="url(#arrowCore)" d="M760,320 C700,355 560,360 485,390"/>
+  <text class="rel" x="620" y="355">1:N</text>
+
+  <path class="line-core" marker-end="url(#arrowCore)" d="M800,320 C800,350 800,365 800,390"/>
+  <text class="rel" x="810" y="360">1:N</text>
+
+  <path class="line-core" marker-end="url(#arrowCore)" d="M840,320 C920,355 1080,360 1115,390"/>
+  <text class="rel" x="980" y="352">1:N</text>
+
+  <path class="line-core" marker-end="url(#arrowCore)" d="M900,320 C1060,355 1400,360 1415,390"/>
+  <text class="rel" x="1220" y="346">1:N</text>
+
+  <!-- Relationships: users -> social -->
+  <path class="line-social" marker-end="url(#arrowSocial)" d="M760,320 C680,470 560,610 510,700"/>
+  <text class="rel" x="640" y="520">1:N</text>
+
+  <path class="line-social" marker-end="url(#arrowSocial)" d="M820,320 C900,470 1060,610 1090,700"/>
+  <text class="rel" x="930" y="520">1:N</text>
+
+  <!-- Legend -->
+  <rect x="50" y="940" width="1500" height="58" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" rx="8"/>
+  <text class="legend-title" x="70" y="965">Notation:</text>
+  <text class="legend-text" x="140" y="965">[PK] = Primary Key</text>
+  <text class="legend-text" x="330" y="965">[FK] = Foreign Key</text>
+  <text class="legend-text" x="520" y="965">1:N = one-to-many relationship</text>
+  <line x1="840" y1="960" x2="900" y2="960" class="line-core" marker-end="url(#arrowCore)"/>
+  <text class="legend-text" x="910" y="965">Core feature tables</text>
+  <line x1="1120" y1="960" x2="1180" y2="960" class="line-social" marker-end="url(#arrowSocial)"/>
+  <text class="legend-text" x="1190" y="965">Social tables</text>
+</svg>
