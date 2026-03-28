@@ -114,6 +114,9 @@ The following features are planned as stretch goals to enhance the user experien
 * Includes priority and overdue tracking
 * Further separates urgent commitments from general tasks
 
+#### Authentication Hardening
+* Add password strength checks (length/complexity rules) after MVP
+
 #### Weekly Goals
 * Allows users to define short-term goals for the current week
 * Provides a lightweight layer between tasks and longer-term planning
@@ -506,13 +509,22 @@ The frontend will be structured around a small set of core pages, with the dashb
 
 ![Life (Lite) Wireframe Overview](docs/life-lite-wireframe-overview.svg)
 
+### Screen Mockups (Auth + Settings)
+The following SVG mockups provide a more detailed visual direction for the core account-related screens:
+
+![Life (Lite) Login Screen Mockup](docs/life-lite-screen-login.svg)
+
+![Life (Lite) Register Screen Mockup](docs/life-lite-screen-register.svg)
+
+![Life (Lite) Account Settings Screen Mockup](docs/life-lite-screen-settings.svg)
+
 ### Core Routes / Pages
 1. Landing / Login Page
 Route: /login
 **Purpose**
 * Allows existing users to sign in
 **Elements**
-* Email or username input
+* Email input
 * Password input
 * Login button
 * Link to Register page
@@ -526,8 +538,8 @@ Route: /register
 * First name input
 * Email input
 * Password input
-* Birthday input
-* Optional photo URL input
+* Optional birthday input
+* Optional profile photo upload
 * Register button
 * Link to Login page
 

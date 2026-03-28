@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Life (Lite) Register Screen Mockup</title>
+  <desc id="desc">Wireframe-style mockup of the registration page with core account fields plus optional birthday and photo upload.</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .shell { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 18; }
+      .top { fill: #1d4ed8; }
+      .card { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+      .input { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.4; rx: 8; }
+      .btn { fill: #0f766e; rx: 8; }
+      .btn-text { fill: #ffffff; font: 700 14px Arial, sans-serif; }
+      .title { fill: #0f172a; font: 700 32px Arial, sans-serif; }
+      .h2 { fill: #0f172a; font: 700 24px Arial, sans-serif; }
+      .label { fill: #334155; font: 600 13px Arial, sans-serif; }
+      .text { fill: #334155; font: 13px Arial, sans-serif; }
+      .muted { fill: #64748b; font: 12px Arial, sans-serif; }
+      .mobile-shell { fill: #ffffff; stroke: #334155; stroke-width: 2; rx: 26; }
+      .mobile-notch { fill: #334155; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="920"/>
+  <text class="title" x="700" y="56" text-anchor="middle">Life (Lite) Screen Mockup: /register</text>
+
+  <rect class="shell" x="80" y="100" width="1240" height="760"/>
+  <rect class="top" x="100" y="120" width="1200" height="68" rx="12"/>
+  <text x="130" y="164" fill="#ffffff" font="700 22px Arial, sans-serif">Create your account</text>
+  <text x="415" y="164" fill="#bfdbfe" font="600 14px Arial, sans-serif">Set up your calm, all-in-one dashboard</text>
+
+  <rect class="card" x="130" y="220" width="860" height="600"/>
+  <text class="h2" x="170" y="272">Registration Form</text>
+  <text class="text" x="170" y="296">Required fields align with MVP auth + user profile plan.</text>
+
+  <text class="label" x="170" y="338">Username</text>
+  <rect class="input" x="170" y="350" width="380" height="44"/>
+  <text class="label" x="580" y="338">First Name</text>
+  <rect class="input" x="580" y="350" width="380" height="44"/>
+
+  <text class="label" x="170" y="424">Email</text>
+  <rect class="input" x="170" y="436" width="380" height="44"/>
+  <text class="label" x="580" y="424">Password</text>
+  <rect class="input" x="580" y="436" width="380" height="44"/>
+
+  <text class="label" x="170" y="510">Birthday (Optional)</text>
+  <rect class="input" x="170" y="522" width="380" height="44"/>
+  <text class="muted" x="186" y="550">MM/DD/YYYY</text>
+  <text class="label" x="580" y="510">Profile Photo (Optional)</text>
+  <rect x="580" y="522" width="380" height="44" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.4" rx="8"/>
+  <text x="770" y="550" fill="#0f172a" font="700 13px Arial, sans-serif" text-anchor="middle">Upload Photo</text>
+
+  <rect class="btn" x="170" y="606" width="790" height="48"/>
+  <text class="btn-text" x="565" y="636" text-anchor="middle">Register</text>
+
+  <text class="text" x="170" y="686">Already have an account?</text>
+  <text x="315" y="686" fill="#1d4ed8" font="700 13px Arial, sans-serif">Sign in</text>
+  <text class="muted" x="170" y="716">Route: /register</text>
+  <text class="muted" x="170" y="738">Post-submit: authenticate session, then redirect to /dashboard</text>
+
+  <rect x="1020" y="240" width="250" height="250" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5" rx="12"/>
+  <text x="1040" y="276" fill="#1e3a8a" font="700 13px Arial, sans-serif">Validation Notes</text>
+  <text x="1040" y="304" fill="#334155" font="12px Arial, sans-serif">- Username and email unique</text>
+  <text x="1040" y="326" fill="#334155" font="12px Arial, sans-serif">- Basic required-field validation only</text>
+  <text x="1040" y="348" fill="#334155" font="12px Arial, sans-serif">- Optional birthday stored as date</text>
+  <text x="1040" y="370" fill="#334155" font="12px Arial, sans-serif">- Optional profile photo upload</text>
+
+  <rect class="mobile-shell" x="1040" y="520" width="220" height="290"/>
+  <rect class="mobile-notch" x="1118" y="538" width="64" height="8" rx="4"/>
+  <text x="1060" y="572" fill="#0f172a" font="700 12px Arial, sans-serif">/register mobile</text>
+  <rect class="input" x="1060" y="592" width="180" height="24"/>
+  <rect class="input" x="1060" y="624" width="180" height="24"/>
+  <rect class="input" x="1060" y="656" width="180" height="24"/>
+  <rect class="input" x="1060" y="688" width="180" height="24"/>
+  <rect x="1060" y="724" width="180" height="28" fill="#0f766e" rx="6"/>
+  <text x="1150" y="743" fill="#ffffff" font="700 11px Arial, sans-serif" text-anchor="middle">Register</text>
+</svg>

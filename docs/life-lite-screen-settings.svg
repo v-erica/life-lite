@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Life (Lite) Account Settings Screen Mockup</title>
+  <desc id="desc">Wireframe-style mockup of the account settings page for profile and account management.</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .shell { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 18; }
+      .nav { fill: #0f172a; }
+      .main { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+      .section { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; rx: 10; }
+      .input { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.4; rx: 8; }
+      .btn-primary { fill: #1d4ed8; rx: 8; }
+      .btn-secondary { fill: #e2e8f0; stroke: #94a3b8; stroke-width: 1.2; rx: 8; }
+      .title { fill: #0f172a; font: 700 32px Arial, sans-serif; }
+      .h2 { fill: #0f172a; font: 700 24px Arial, sans-serif; }
+      .h3 { fill: #0f172a; font: 700 16px Arial, sans-serif; }
+      .label { fill: #334155; font: 600 13px Arial, sans-serif; }
+      .text { fill: #334155; font: 13px Arial, sans-serif; }
+      .muted { fill: #64748b; font: 12px Arial, sans-serif; }
+      .btn-text-light { fill: #ffffff; font: 700 13px Arial, sans-serif; }
+      .btn-text-dark { fill: #0f172a; font: 700 13px Arial, sans-serif; }
+      .mobile-shell { fill: #ffffff; stroke: #334155; stroke-width: 2; rx: 26; }
+      .mobile-notch { fill: #334155; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="920"/>
+  <text class="title" x="700" y="56" text-anchor="middle">Life (Lite) Screen Mockup: /settings</text>
+
+  <rect class="shell" x="80" y="100" width="1240" height="760"/>
+
+  <rect class="nav" x="100" y="120" width="1200" height="64" rx="12"/>
+  <text x="130" y="160" fill="#ffffff" font="700 18px Arial, sans-serif">Life (Lite)</text>
+  <text x="240" y="160" fill="#cbd5e1" font="600 13px Arial, sans-serif">Dashboard</text>
+  <text x="322" y="160" fill="#93c5fd" font="700 13px Arial, sans-serif">Settings</text>
+  <text x="1215" y="160" fill="#fca5a5" font="600 12px Arial, sans-serif" text-anchor="end">Log Out</text>
+
+  <rect class="main" x="130" y="214" width="980" height="606"/>
+  <text class="h2" x="170" y="262">Account Settings</text>
+  <text class="text" x="170" y="286">Manage profile details and account credentials.</text>
+
+  <rect class="section" x="170" y="316" width="900" height="168"/>
+  <text class="h3" x="196" y="346">Profile</text>
+  <circle cx="240" cy="408" r="42" fill="#dbeafe" stroke="#93c5fd" stroke-width="2"/>
+  <text x="240" y="414" fill="#1e3a8a" font="700 12px Arial, sans-serif" text-anchor="middle">Photo</text>
+  <text class="label" x="304" y="368">Profile Photo</text>
+  <rect class="btn-secondary" x="304" y="378" width="220" height="40"/>
+  <text class="btn-text-dark" x="414" y="403" text-anchor="middle">Upload New Photo</text>
+  <text class="muted" x="544" y="403">JPG, PNG up to 5MB</text>
+  <rect class="btn-secondary" x="304" y="428" width="170" height="34"/>
+  <text class="btn-text-dark" x="389" y="450" text-anchor="middle">Remove Photo</text>
+
+  <rect class="section" x="170" y="500" width="900" height="232"/>
+  <text class="h3" x="196" y="530">Account Details</text>
+
+  <text class="label" x="196" y="562">Username</text>
+  <rect class="input" x="196" y="572" width="270" height="38"/>
+  <text class="label" x="486" y="562">First Name</text>
+  <rect class="input" x="486" y="572" width="270" height="38"/>
+  <text class="label" x="776" y="562">Birthday (Optional)</text>
+  <rect class="input" x="776" y="572" width="268" height="38"/>
+
+  <text class="label" x="196" y="628">Email</text>
+  <rect class="input" x="196" y="638" width="410" height="38"/>
+  <text class="label" x="626" y="628">New Password</text>
+  <rect class="input" x="626" y="638" width="418" height="38"/>
+
+  <rect class="btn-primary" x="874" y="688" width="170" height="38"/>
+  <text class="btn-text-light" x="959" y="712" text-anchor="middle">Save Changes</text>
+
+  <rect x="1130" y="230" width="160" height="232" fill="#ecfeff" stroke="#99f6e4" stroke-width="1.5" rx="10"/>
+  <text x="1150" y="260" fill="#134e4a" font="700 13px Arial, sans-serif">Endpoint</text>
+  <text x="1150" y="286" fill="#334155" font="12px Arial, sans-serif">GET /api/users/me</text>
+  <text x="1150" y="308" fill="#334155" font="12px Arial, sans-serif">PATCH /api/users/me</text>
+  <text x="1150" y="344" fill="#334155" font="12px Arial, sans-serif">Editable fields:</text>
+  <text x="1150" y="366" fill="#334155" font="12px Arial, sans-serif">- profile photo upload</text>
+  <text x="1150" y="386" fill="#334155" font="12px Arial, sans-serif">- username</text>
+  <text x="1150" y="406" fill="#334155" font="12px Arial, sans-serif">- first_name</text>
+  <text x="1150" y="426" fill="#334155" font="12px Arial, sans-serif">- email</text>
+  <text x="1150" y="446" fill="#334155" font="12px Arial, sans-serif">- password</text>
+
+  <rect class="mobile-shell" x="1130" y="500" width="160" height="320"/>
+  <rect class="mobile-notch" x="1183" y="520" width="54" height="8" rx="4"/>
+  <text x="1146" y="552" fill="#0f172a" font="700 11px Arial, sans-serif">/settings mobile</text>
+  <rect class="input" x="1146" y="568" width="128" height="24"/>
+  <rect class="input" x="1146" y="600" width="128" height="24"/>
+  <rect class="input" x="1146" y="632" width="128" height="24"/>
+  <rect class="input" x="1146" y="664" width="128" height="24"/>
+  <rect x="1146" y="702" width="128" height="28" fill="#1d4ed8" rx="6"/>
+  <text x="1210" y="721" fill="#ffffff" font="700 11px Arial, sans-serif" text-anchor="middle">Save</text>
+
+  <text class="muted" x="170" y="788">Route: /settings</text>
+</svg>

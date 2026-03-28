@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Life (Lite) Login Screen Mockup</title>
+  <desc id="desc">Wireframe-style mockup of the login page with brand panel, auth card, and responsive mobile preview.</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .shell { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 18; }
+      .hero { fill: #0f766e; }
+      .hero-soft { fill: #115e59; }
+      .card { fill: #ffffff; stroke: #1f2937; stroke-width: 2; rx: 14; }
+      .input { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.5; rx: 8; }
+      .btn { fill: #1d4ed8; rx: 8; }
+      .btn-text { fill: #ffffff; font: 700 14px Arial, sans-serif; }
+      .title { fill: #0f172a; font: 700 32px Arial, sans-serif; }
+      .h2 { fill: #0f172a; font: 700 24px Arial, sans-serif; }
+      .label { fill: #334155; font: 600 13px Arial, sans-serif; }
+      .text { fill: #334155; font: 13px Arial, sans-serif; }
+      .muted { fill: #64748b; font: 12px Arial, sans-serif; }
+      .mobile-shell { fill: #ffffff; stroke: #334155; stroke-width: 2; rx: 26; }
+      .mobile-notch { fill: #334155; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="900"/>
+  <text class="title" x="700" y="56" text-anchor="middle">Life (Lite) Screen Mockup: /login</text>
+
+  <rect class="shell" x="80" y="100" width="1240" height="740"/>
+
+  <rect class="hero" x="100" y="120" width="500" height="700" rx="14"/>
+  <circle class="hero-soft" cx="220" cy="250" r="120"/>
+  <circle class="hero-soft" cx="470" cy="650" r="150"/>
+  <text x="140" y="210" fill="#ffffff" font="700 34px Arial, sans-serif">Life (Lite)</text>
+  <text x="140" y="246" fill="#ccfbf1" font="600 16px Arial, sans-serif">A calm space for your everyday life.</text>
+  <text x="140" y="292" fill="#e2e8f0" font="13px Arial, sans-serif">Centralize tasks, notes, bills, birthdays, and friend board updates.</text>
+  <rect x="140" y="340" width="310" height="44" fill="#ffffff" opacity="0.14" rx="8"/>
+  <text x="160" y="368" fill="#ffffff" font="600 13px Arial, sans-serif">Highlights on sign in:</text>
+  <text x="160" y="389" fill="#e2e8f0" font="13px Arial, sans-serif">Today tasks, upcoming bills, recent friend comments</text>
+
+  <rect class="card" x="650" y="170" width="520" height="560"/>
+  <text class="h2" x="690" y="230">Welcome back</text>
+  <text class="text" x="690" y="256">Log in to your dashboard</text>
+
+  <text class="label" x="690" y="300">Email</text>
+  <rect class="input" x="690" y="314" width="440" height="46"/>
+  <text class="muted" x="706" y="343">you@example.com</text>
+
+  <text class="label" x="690" y="392">Password</text>
+  <rect class="input" x="690" y="406" width="440" height="46"/>
+  <text class="muted" x="706" y="435">**********</text>
+
+  <rect class="btn" x="690" y="486" width="440" height="48"/>
+  <text class="btn-text" x="910" y="516" text-anchor="middle">Log In</text>
+
+  <text class="text" x="690" y="568">New here?</text>
+  <text x="756" y="568" fill="#1d4ed8" font="700 13px Arial, sans-serif">Create an account</text>
+
+  <line x1="690" y1="596" x2="1130" y2="596" stroke="#e2e8f0"/>
+  <text class="muted" x="690" y="624">Route: /login</text>
+  <text class="muted" x="690" y="646">On success: redirect to /dashboard</text>
+
+  <rect class="mobile-shell" x="1030" y="300" width="210" height="430"/>
+  <rect class="mobile-notch" x="1105" y="320" width="60" height="8" rx="4"/>
+  <text x="1050" y="360" fill="#0f172a" font="700 12px Arial, sans-serif">/login mobile</text>
+  <rect class="input" x="1050" y="382" width="170" height="34"/>
+  <rect class="input" x="1050" y="430" width="170" height="34"/>
+  <rect x="1050" y="482" width="170" height="36" fill="#1d4ed8" rx="6"/>
+  <text x="1135" y="505" fill="#ffffff" font="700 12px Arial, sans-serif" text-anchor="middle">Log In</text>
+  <text x="1050" y="540" fill="#64748b" font="11px Arial, sans-serif">No horizontal scroll</text>
+  <text x="1050" y="558" fill="#64748b" font="11px Arial, sans-serif">Stacked fields + full-width CTA</text>
+</svg>

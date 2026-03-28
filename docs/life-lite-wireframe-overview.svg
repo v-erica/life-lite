@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040" role="img" aria-labelledby="title desc">
   <title id="title">Life (Lite) Wireframe Overview</title>
-  <desc id="desc">High-level wireframe map showing app routes, dashboard widget layout, and modal interaction flow.</desc>
+  <desc id="desc">High-level wireframe map showing app routes, standard dashboard widget organization, and modal interaction flow.</desc>
 
   <defs>
     <style>
@@ -20,6 +20,7 @@
       .label { fill: #0f172a; font: 12px Arial, sans-serif; }
       .legend-title { fill: #0f172a; font: 700 13px Arial, sans-serif; }
       .legend-text { fill: #334155; font: 13px Arial, sans-serif; }
+
     </style>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
@@ -41,11 +42,11 @@
 
     <rect class="widget" x="60" y="70" width="340" height="56"/>
     <text class="widget-title" x="80" y="96">/login</text>
-    <text class="text" x="80" y="114">Username/email + password</text>
+    <text class="text" x="80" y="114">Email + password</text>
 
     <rect class="widget" x="60" y="180" width="340" height="56"/>
     <text class="widget-title" x="80" y="206">/register</text>
-    <text class="text" x="80" y="224">Create account + optional photo URL</text>
+    <text class="text" x="80" y="224">Create account + optional photo upload</text>
 
     <rect class="widget" x="60" y="290" width="340" height="84"/>
     <text class="widget-title" x="80" y="316">/dashboard (main app shell)</text>
@@ -67,38 +68,43 @@
   <g transform="translate(540,100)">
     <rect class="panel" width="1020" height="640"/>
     <rect class="panel-head-dash" width="1020" height="38"/>
-    <text class="panel-title" x="510" y="24" text-anchor="middle">Dashboard Wireframe (Widget Layout)</text>
+    <text class="panel-title" x="510" y="24" text-anchor="middle">Dashboard Wireframe (MVP Layout)</text>
 
-    <rect class="widget" x="24" y="56" width="972" height="46"/>
-    <text class="widget-title" x="40" y="84">Header: Greeting + Date + Settings + Log Out</text>
+    <text x="510" y="72" text-anchor="middle" fill="#0f172a" font="700 24px Arial, sans-serif">At a Glance (Lite)</text>
 
-    <rect class="widget" x="24" y="124" width="312" height="208"/>
-    <text class="widget-title" x="38" y="146">Calendar</text>
-    <text class="text" x="38" y="166">Month grid + date indicators</text>
+    <!-- Top row -->
+    <rect class="widget" x="44" y="96" width="300" height="82"/>
+    <text class="widget-title" x="62" y="122">User Greeting</text>
+    <text class="text" x="62" y="142">Changes for time of day</text>
 
-    <rect class="widget" x="354" y="124" width="312" height="208"/>
-    <text class="widget-title" x="368" y="146">To-Dos</text>
-    <text class="text" x="368" y="166">Today/Week/All + priority sorting</text>
+    <!-- Core grid -->
+    <rect class="widget" x="44" y="220" width="220" height="132"/>
+    <text class="widget-title" x="62" y="246">Calendar View</text>
+    <text class="text" x="62" y="266">Monthly activity indicators</text>
 
-    <rect class="widget" x="684" y="124" width="312" height="208"/>
-    <text class="widget-title" x="698" y="146">Notes</text>
-    <text class="text" x="698" y="166">Pinned first + updated timestamp</text>
+    <rect class="widget" x="292" y="220" width="220" height="132"/>
+    <text class="widget-title" x="310" y="246">Today's To-Dos</text>
+    <text class="text" x="310" y="266">Checklist + priority sorting</text>
 
-    <rect class="widget" x="24" y="352" width="312" height="176"/>
-    <text class="widget-title" x="38" y="374">Waiting On</text>
-    <text class="text" x="38" y="394">Status flow + follow-up sorting</text>
+    <rect class="widget" x="540" y="220" width="396" height="132"/>
+    <text class="widget-title" x="558" y="246">Quick Notes</text>
+    <text class="text" x="558" y="266">Capture ideas quickly; pin important notes</text>
 
-    <rect class="widget" x="354" y="352" width="312" height="176"/>
-    <text class="widget-title" x="368" y="374">Bills / Subscriptions</text>
-    <text class="text" x="368" y="394">Next upcoming occurrence view</text>
+    <rect class="widget" x="44" y="380" width="220" height="132"/>
+    <text class="widget-title" x="62" y="406">Upcoming Bills</text>
+    <text class="text" x="62" y="426">Recurring due dates + amounts</text>
 
-    <rect class="widget" x="684" y="352" width="312" height="176"/>
-    <text class="widget-title" x="698" y="374">Birthdays</text>
-    <text class="text" x="698" y="394">Upcoming birthdays list</text>
+    <rect class="widget" x="292" y="380" width="220" height="132"/>
+    <text class="widget-title" x="310" y="406">Waiting On</text>
+    <text class="text" x="310" y="426">Track blocked items + follow-ups</text>
 
-    <rect class="widget" x="24" y="548" width="972" height="72"/>
-    <text class="widget-title" x="38" y="570">Friend Board</text>
-    <text class="text" x="38" y="590">Recent 5 comments + add friend/comment actions (friends only)</text>
+    <rect class="widget" x="540" y="380" width="396" height="132"/>
+    <text class="widget-title" x="558" y="406">Upcoming Birthdays</text>
+    <text class="text" x="558" y="426">Upcoming reminders for people you track</text>
+
+    <rect class="widget" x="44" y="540" width="892" height="82"/>
+    <text class="widget-title" x="62" y="566">Friend Board</text>
+    <text class="text" x="62" y="586">Recent comments from accepted friends (friends-only interactions)</text>
   </g>
 
   <!-- MODAL PANEL -->
@@ -114,8 +120,8 @@
 
     <rect class="widget" x="46" y="176" width="368" height="76"/>
     <text class="widget-title" x="60" y="200">Modal form</text>
-    <text class="text" x="60" y="218">Save -> API mutate -> refresh widget data</text>
-    <text class="text" x="60" y="236">Delete (edit mode) -> API delete -> refresh widget</text>
+    <text class="text" x="60" y="218">Save -&gt; API mutate -&gt; refresh widget data</text>
+    <text class="text" x="60" y="236">Delete (edit mode) -&gt; API delete -&gt; refresh widget</text>
 
     <path class="arrow" marker-end="url(#arrow)" d="M230,146 L230,176"/>
   </g>
@@ -131,7 +137,7 @@
   <text class="legend-title" x="566" y="800">Legend</text>
   <text class="legend-text" x="566" y="828">Solid arrows: primary route/navigation flow</text>
   <text class="legend-text" x="566" y="852">Dashed arrows: secondary or alternate flow</text>
-  <text class="legend-text" x="566" y="876">Widget boxes: major UI regions in /dashboard</text>
-  <text class="legend-text" x="566" y="900">Modal panel: reusable create/edit interaction pattern used by widgets</text>
-  <text class="legend-text" x="566" y="924">This complements the ASCII wireframes below with a high-level architecture view.</text>
+  <text class="legend-text" x="566" y="876">Widget boxes: standard wireframe representation of dashboard modules</text>
+  <text class="legend-text" x="566" y="900">Dashboard panel above represents MVP widgets only</text>
+  <text class="legend-text" x="566" y="924">Modal panel: reusable create/edit interaction pattern used by widget actions</text>
 </svg>
