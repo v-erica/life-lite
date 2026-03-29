@@ -1,6 +1,9 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const { verifyDbConnection } = require("./db/connection");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -14,7 +17,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(400).json({ error: "Route not found." });
+  res.status(404).json({ error: "Route not found." });
 });
 
 app.use((err, req, res, next) => {
@@ -22,6 +25,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal server error" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+verifyDbConnection()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Database connection failed:", err.message);
+    process.exit(1);
+  });
