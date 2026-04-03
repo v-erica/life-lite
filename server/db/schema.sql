@@ -6,7 +6,7 @@ CREATE TABLE users (
     password_hash text not null,
     first_name text not null,
     birthday date,
-    username text unique not null,
+    username text unique,
     photo_url text,
     created_at timestamptz not null default now(),
     updated_at timestamptz 

@@ -18,16 +18,24 @@ export async function createUser(
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const {
-    rows: [user],
-  } = await db.query(sql, [
-    email,
-    hashedPassword,
-    first_name,
-    birthday,
-    username,
-    photo_url,
-  ]);
+  try {
+    const {
+      rows: [user],
+    } = await db.query(sql, [
+      email,
+      hashedPassword,
+      first_name,
+      birthday,
+      username,
+      photo_url,
+    ]);
 
-  return user;
+    return user;
+  } catch (err) {
+    console.error("createUser failed:", {
+      code: err.code,
+      message: err.message,
+    });
+    throw err;
+  }
 }
