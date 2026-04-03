@@ -1,2 +1,5 @@
 AI_HANDOFF.md
 server/.env
+LEARNING_NOTES.md
+server/node_modules/
+client/node_modules/
