@@ -1,4 +1,4 @@
-const { Pool } = require("pg");
+import { Pool } from "pg";
 const required = ["DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD"];
 const missing = required.filter((key) => !process.env[key]);
 
@@ -20,4 +20,4 @@ async function verifyDbConnection() {
   await pool.query("SELECT 1");
 }
 
-module.exports = { pool, verifyDbConnection };
+export { pool, verifyDbConnection };
