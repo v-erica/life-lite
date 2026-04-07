@@ -13,7 +13,7 @@ export default function Register() {
     const email = formData.get("email");
     const password = formData.get("password");
     try {
-      await register({ email, password });
+      await register({ first_name, email, password });
       navigate("/register");
     } catch (e) {
       setError(e.message);
@@ -24,6 +24,10 @@ export default function Register() {
     <>
       <h1>Register for an account</h1>
       <form action={tryRegister}>
+        <label>
+          First Name
+          <input type="text" name="first_name" required />
+        </label>
         <label>
           Email
           <input type="text" name="email" required />
