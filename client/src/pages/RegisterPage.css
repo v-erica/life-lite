@@ -1,0 +1,79 @@
+.register-page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  text-align: left;
+}
+
+.register-title {
+  margin: 0 0 16px;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+.register-field input {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 1rem;
+}
+
+.register-field input:focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+}
+
+.register-button {
+  margin-top: 4px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.register-button:hover {
+  background: #1d4ed8;
+}
+
+.register-error {
+  margin: 0;
+  color: #b91c1c;
+}
+
+.register-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
