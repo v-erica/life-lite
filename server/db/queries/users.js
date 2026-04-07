@@ -13,7 +13,7 @@ export async function createUser(
         insert into users
             (email, password_hash, first_name, birthday, username, photo_url)
         values($1, $2, $3, $4, $5, $6)
-        returning *;
+        returning id, email, first_name, birthday, username, photo_url;
     `;
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,4 +38,29 @@ export async function createUser(
     });
     throw err;
   }
+}
+
+export async function getUserByCredentials(email, password) {
+  const sql = `
+  select 
+    id, 
+    email, 
+    password_hash, 
+    first_name, 
+    birthday
+  from users
+  where email = $1`;
+
+  const {
+    rows: [user],
+  } = await db.query(sql, [email]);
+
+  if (!user) return null;
+
+  const isValid = await bcrypt.compare(password, user.password_hash);
+
+  if (!isValid) return null;
+
+  delete user.password_hash;
+  return user;
 }
