@@ -10,6 +10,7 @@ export default function Register() {
   const [error, setError] = useState(null);
 
   const tryRegister = async (formData) => {
+    const first_name = formData.get("first_name");
     const email = formData.get("email");
     const password = formData.get("password");
     try {
