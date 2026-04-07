@@ -19,7 +19,7 @@ async function seed() {
   ];
 
   for (const user of users) {
-    const createdUser = await createUser(
+    await createUser(
       user.email,
       user.password,
       user.first_name,
