@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon --env-file=.env index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:schema": "psql -d life_lite -f db/schema.sql",
+    "db:schema": "psql \"$DATABASE_URL\" -f db/schema.sql",
     "db:seed": "node db/seed.js",
     "db:reset": "npm run db:schema && npm run db:seed"
   },
