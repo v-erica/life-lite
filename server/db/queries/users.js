@@ -40,7 +40,7 @@ export async function createUser(
   }
 }
 
-export async function getUserByCredentials(email, password) {
+export async function getUserByCredentials(identifier, password) {
   const sql = `
   select 
     id, 
@@ -49,11 +49,11 @@ export async function getUserByCredentials(email, password) {
     first_name, 
     birthday
   from users
-  where email = $1`;
+  where email = $1 or username = $1`;
 
   const {
     rows: [user],
-  } = await db.query(sql, [email]);
+  } = await db.query(sql, [identifier]);
 
   if (!user) return null;
 
