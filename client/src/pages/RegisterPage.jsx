@@ -11,11 +11,27 @@ export default function Register() {
   const [error, setError] = useState(null);
 
   const tryRegister = async (formData) => {
-    const first_name = formData.get("first_name");
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const first_name = formData.get("first_name")?.trim();
+    const email = formData.get("email")?.trim();
+    const password = formData.get("password")?.trim();
+    const username = formData.get("username")?.trim() || null;
+    const birthday = formData.get("birthday")?.trim() || null;
+    const photo_url = formData.get("photo_url")?.trim() || null;
+
+    if (!first_name || !email || !password) {
+      setError("First name, email, and password are required.");
+      return;
+    }
+
     try {
-      await register({ first_name, email, password });
+      await register({
+        first_name,
+        email,
+        password,
+        username,
+        birthday,
+        photo_url,
+      });
       navigate("/register");
     } catch (e) {
       setError(e.message);
@@ -38,6 +54,20 @@ export default function Register() {
           <label className="register-field">
             Password
             <input type="password" name="password" required />
+          </label>
+          <br></br>
+          <center>-- Optional --</center>
+          <label className="register-field">
+            Username
+            <input type="text" name="username" />
+          </label>
+          <label className="register-field">
+            Birthday
+            <input type="date" name="birthday" />
+          </label>
+          <label className="register-field">
+            Profile Photo URL
+            <input type="text" name="photo_url" />
           </label>
           <button className="register-button">Register</button>
           {error && (
