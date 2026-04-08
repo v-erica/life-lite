@@ -4,11 +4,11 @@
   "description": "Backend API lives here.",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env index.js",
+    "start": "node index.js",
     "dev": "nodemon --env-file=.env index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:schema": "psql -d life_lite -f db/schema.sql",
-    "db:seed": "node --env-file=.env db/seed.js",
+    "db:schema": "psql \"$DATABASE_URL\" -f db/schema.sql",
+    "db:seed": "node db/seed.js",
     "db:reset": "npm run db:schema && npm run db:seed"
   },
   "keywords": [],
