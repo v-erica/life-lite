@@ -48,25 +48,33 @@ router.post(
   },
 );
 
-router.post("/login", requireBody(["email", "password"]), async (req, res) => {
-  const { email, password } = req.body;
+router.post(
+  "/login",
+  requireBody(["identifier", "password"]),
+  async (req, res) => {
+    const { identifier, password } = req.body;
 
-  if (!email?.trim() || !password?.trim()) {
-    return res.status(400).json({ error: "Email and password are required." });
-  }
-
-  try {
-    const user = await getUserByCredentials(email, password);
-
-    if (!user) {
-      return res.status(401).json({ error: "Invalid email or password." });
+    if (!identifier?.trim() || !password?.trim()) {
+      return res
+        .status(400)
+        .json({ error: "Username/email and password are required." });
     }
 
-    const token = createToken({ sub: user.id });
+    try {
+      const user = await getUserByCredentials(identifier, password);
 
-    return res.status(200).json({ token });
-  } catch (err) {
-    console.error("Login error:", err.message);
-    return res.status(500).json({ error: "Internal server error." });
-  }
-});
+      if (!user) {
+        return res
+          .status(401)
+          .json({ error: "Invalid username/email or password." });
+      }
+
+      const token = createToken({ sub: user.id });
+
+      return res.status(200).json({ token });
+    } catch (err) {
+      console.error("Login error:", err.message);
+      return res.status(500).json({ error: "Internal server error." });
+    }
+  },
+);

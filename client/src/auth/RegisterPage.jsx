@@ -32,7 +32,7 @@ export default function Register() {
         birthday,
         photo_url,
       });
-      navigate("/register");
+      navigate("/dashboard");
     } catch (e) {
       setError(e.message);
     }

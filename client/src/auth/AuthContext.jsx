@@ -24,7 +24,24 @@ export function AuthProvider({ children }) {
     return nextToken;
   };
 
-  const value = { token, setToken, register };
+  const login = async (credentials) => {
+    const response = await fetch(`${API}/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
+    });
+
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.error || "Login failed.");
+    }
+
+    const nextToken = result.token ?? result;
+    setToken(nextToken);
+    return nextToken;
+  };
+
+  const value = { token, setToken, register, login };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
