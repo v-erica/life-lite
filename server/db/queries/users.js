@@ -64,3 +64,23 @@ export async function getUserByCredentials(identifier, password) {
   delete user.password_hash;
   return user;
 }
+
+export async function getUserById(id) {
+  const sql = `
+    select 
+      id,
+      email,
+      username,
+      first_name
+    from users
+    where id = $1
+  `;
+
+  const {
+    rows: [user],
+  } = await db.query(sql, [id]);
+
+  if (!user) return null;
+
+  return user;
+}

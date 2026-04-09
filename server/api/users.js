@@ -5,6 +5,7 @@ export default router;
 import { createUser, getUserByCredentials } from "#db/queries/users";
 import { createToken } from "#utils/jwt";
 import requireBody from "#middleware/requireBody";
+import requireUser from "#middleware/requireUser";
 
 router.post(
   "/register",
@@ -78,3 +79,7 @@ router.post(
     }
   },
 );
+
+router.get("/me", requireUser, async (req, res) => {
+  res.json(req.user);
+});

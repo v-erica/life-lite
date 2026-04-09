@@ -1,11 +1,44 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const API = import.meta.env.VITE_API;
+const TOKEN_KEY = "life_lite_token";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  const clearSession = () => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem(TOKEN_KEY);
+  };
+
+  const fetchCurrentUser = async (jwt) => {
+    const response = await fetch(`${API}/users/me`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      clearSession();
+      throw new Error(result.error || "Session expired. Please log in again.");
+    }
+
+    setUser(result);
+    return result;
+  };
+
+  const establishSession = async (nextToken) => {
+    setToken(nextToken);
+
+    localStorage.setItem(TOKEN_KEY, nextToken);
+
+    return fetchCurrentUser(nextToken);
+  };
 
   const register = async (credentials) => {
     const response = await fetch(`${API}/users/register`, {
@@ -20,7 +53,7 @@ export function AuthProvider({ children }) {
     }
 
     const nextToken = result.token ?? result;
-    setToken(nextToken);
+    await establishSession(nextToken);
     return nextToken;
   };
 
@@ -37,11 +70,43 @@ export function AuthProvider({ children }) {
     }
 
     const nextToken = result.token ?? result;
-    setToken(nextToken);
+    await establishSession(nextToken);
     return nextToken;
   };
 
-  const value = { token, setToken, register, login };
+  const logout = () => {
+    clearSession();
+  };
+
+  useEffect(() => {
+    const bootAuth = async () => {
+      const storedToken = localStorage.getItem(TOKEN_KEY);
+
+      if (!storedToken) {
+        setIsAuthLoading(false);
+        return;
+      }
+
+      try {
+        setToken(storedToken);
+        await fetchCurrentUser(storedToken);
+      } catch {
+      } finally {
+        setIsAuthLoading(false);
+      }
+    };
+
+    bootAuth();
+  }, []);
+
+  const value = {
+    token,
+    user,
+    isAuthLoading,
+    login,
+    register,
+    logout,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
