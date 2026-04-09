@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { verifyDbConnection } from "#db/connection";
+import getUserFromToken from "#middleware/getUserFromToken";
 import db from "#db/client";
 
 import usersRouter from "./api/users.js";
@@ -28,11 +29,13 @@ verifyDbConnection()
     process.exit(1);
   });
 
-app.use("/users", usersRouter);
-
 app.get("/health", (req, res) => {
   res.status(200).json({ ok: true, service: "life-lite-server" });
 });
+
+app.use(getUserFromToken);
+
+app.use("/users", usersRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found." });
