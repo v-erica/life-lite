@@ -3,6 +3,7 @@ import RegisterPage from "./auth/RegisterPage.jsx";
 import LoginPage from "./auth/LoginPage.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
+import SettingsPage from "./auth/SettingsPage.jsx";
 
 function App() {
   return (
@@ -14,6 +15,14 @@ function App() {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <SettingsPage />
           </ProtectedRoute>
         }
       />

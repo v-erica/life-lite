@@ -2,7 +2,11 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { createUser, getUserByCredentials } from "#db/queries/users";
+import {
+  createUser,
+  getUserByCredentials,
+  updateUserById,
+} from "#db/queries/users";
 import { createToken } from "#utils/jwt";
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
@@ -82,4 +86,84 @@ router.post(
 
 router.get("/me", requireUser, async (req, res) => {
   res.json(req.user);
+});
+
+router.patch("/me", requireUser, async (req, res) => {
+  const raw = req.body ?? {};
+
+  const updates = {};
+
+  if (raw.email !== undefined) {
+    const email = raw.email?.trim();
+
+    if (!email)
+      return res.status(400).json({ error: "Email cannot be empty." });
+
+    updates.email = email;
+  }
+
+  if (raw.first_name !== undefined) {
+    const firstName = raw.first_name?.trim();
+
+    if (!firstName)
+      return res.status(400).json({ error: "First name cannot be empty." });
+
+    updates.first_name = firstName;
+  }
+
+  if (raw.password !== undefined) {
+    const password = raw.password?.trim();
+
+    if (!password) {
+      return res.status(400).json({ error: "Password cannot be empty." });
+    }
+
+    updates.password = password;
+  }
+
+  if (raw.username !== undefined) {
+    const username = raw.username?.trim();
+
+    updates.username = username || null;
+  }
+
+  if (raw.birthday !== undefined) {
+    const birthday = raw.birthday?.trim();
+
+    updates.birthday = birthday || null;
+  }
+
+  if (raw.photo_url !== undefined) {
+    const photoUrl = raw.photo_url?.trim();
+
+    updates.photo_url = photoUrl || null;
+  }
+
+  if (Object.keys(updates).length === 0) {
+    return res.status(400).json({ error: "No valid profile fields provided." });
+  }
+
+  try {
+    const user = await updateUserById(req.user.id, updates);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    return res.status(200).json(user);
+  } catch (err) {
+    if (err.code === "23505") {
+      if (err.constraint?.includes("email")) {
+        return res.status(409).json({ error: "Email already in use." });
+      }
+
+      if (err.constraint?.includes("username")) {
+        return res.status(409).json({ error: "Username already in use." });
+      }
+
+      return res.status(409).json({ error: "Duplicate value not allowed." });
+    }
+
+    return res.status(500).json({ error: "Internal server error." });
+  }
 });
