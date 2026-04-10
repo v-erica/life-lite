@@ -17,7 +17,7 @@ export default async function getUserFromToken(req, res, next) {
 
     return next();
   } catch (e) {
-    console.error(e);
+    console.error("Token verification failed:", e.message);
 
     return res.status(401).json({ error: "Invalid token." });
   }

@@ -78,6 +78,28 @@ export function AuthProvider({ children }) {
     clearSession();
   };
 
+  const updateProfile = async (profileUpdates) => {
+    if (!token) throw new Error("You must be logged in.");
+
+    const response = await fetch(`${API}/users/me`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(profileUpdates),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Profile update failed.");
+    }
+
+    setUser(result);
+    return result;
+  };
+
   useEffect(() => {
     const bootAuth = async () => {
       const storedToken = localStorage.getItem(TOKEN_KEY);
@@ -106,6 +128,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    updateProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

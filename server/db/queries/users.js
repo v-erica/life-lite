@@ -71,7 +71,9 @@ export async function getUserById(id) {
       id,
       email,
       username,
-      first_name
+      first_name,
+      birthday,
+      photo_url
     from users
     where id = $1
   `;
@@ -83,4 +85,47 @@ export async function getUserById(id) {
   if (!user) return null;
 
   return user;
+}
+
+export async function updateUserById(id, updates) {
+  const setClauses = [];
+  const values = [];
+  let i = 1;
+
+  const addField = (column, value) => {
+    setClauses.push(`${column} = $${i}`);
+    values.push(value);
+    i += 1;
+  };
+
+  if (updates.email !== undefined) addField("email", updates.email);
+  if (updates.first_name !== undefined)
+    addField("first_name", updates.first_name);
+  if (updates.username !== undefined) addField("username", updates.username);
+  if (updates.birthday !== undefined) addField("birthday", updates.birthday);
+  if (updates.photo_url !== undefined) addField("photo_url", updates.photo_url);
+
+  if (updates.password !== undefined) {
+    const passwordHash = await bcrypt.hash(updates.password, 10);
+    addField("password_hash", passwordHash);
+  }
+
+  if (setClauses.length === 0) return null;
+
+  setClauses.push("updated_at = now()");
+
+  const sql = `
+    update users
+    set ${setClauses.join(", ")}
+    where id = $${i}
+    returning id, email, username, first_name, birthday, photo_url, updated_at
+  `;
+
+  values.push(id);
+
+  const {
+    rows: [user],
+  } = await db.query(sql, values);
+
+  return user ?? null;
 }
