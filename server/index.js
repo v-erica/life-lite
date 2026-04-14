@@ -7,6 +7,7 @@ import getUserFromToken from "#middleware/getUserFromToken";
 import db from "#db/client";
 
 import usersRouter from "./api/users.js";
+import dashboardRouter from "./api/dashboard.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -36,6 +37,8 @@ app.get("/health", (req, res) => {
 app.use(getUserFromToken);
 
 app.use("/users", usersRouter);
+
+app.use("/dashboard", dashboardRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found." });
