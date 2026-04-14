@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./DashboardPage.css";
+import Modal from "../components/Modal";
 
 const WIDGETS = ["Calendar", "To-Dos", "Notes", "Bills", "Birthdays"];
 
@@ -11,6 +12,7 @@ export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [isDashboardLoading, setIsDashboardLoading] = useState(true);
   const [dashboardError, setDashboardError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const name = user?.first_name ?? "there";
   const initials = (user?.first_name?.[0] ?? "U").toUpperCase();
@@ -115,6 +117,13 @@ export default function Dashboard() {
             )}
           </div>
           <div className="dashboard-actions">
+            <button
+              className="dashboard-open-modal"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Open Create Modal
+            </button>
+
             <Link className="dashboard-settings-link" to="/settings">
               Settings
             </Link>
@@ -144,6 +153,13 @@ export default function Dashboard() {
           ))}
         </section>
       </section>
+      <Modal
+        isOpen={isModalOpen}
+        title="Create Item"
+        onClose={() => setIsModalOpen(false)}
+      >
+        <p>Reusable modal shell for create/edit flows.</p>
+      </Modal>
     </main>
   );
 }
