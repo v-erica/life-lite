@@ -2,6 +2,18 @@
 
 Life (Lite) is a personal dashboard built to reduce the anxiety that comes from managing your life across too many apps. It centralizes tasks, notes, deadlines, and reminders into one calm, visually intuitive space, so nothing important gets lost. The app is designed to prioritize clarity and ease—separating ideas from responsibilities, highlighting what matters most, and even tracking things that are out of your control with a “waiting on” system. It also includes a private friend board for simple, meaningful connection without the noise of social media.
 
+## Scope Adjustment (April 13, 2026)
+The original MVP scope included both **Waiting On** and **Friend/Social** modules. After comparing implementation pace to the April 22 capstone deadline, scope was adjusted to keep the timeline realistic and preserve quality on core deliverables.
+
+- Deferred to stretch/post-deadline:
+  - Waiting On (`#25-#28`)
+  - Friend/Social (`#35-#37`)
+- Rationale:
+  - Estimated remaining effort exceeded realistic delivery pace before April 22
+  - Keeping these in MVP increased risk to testing depth and stability
+- Product intent remains unchanged:
+  - These features were planned, are still documented, and are deferred rather than removed
+
 ## Concrete Core Features (MVP)
 ### Summary
 The MVP for Life (Lite) focuses on a scoped set of features that centralize personal organization into a single, calm dashboard experience. The application emphasizes clarity, low cognitive load, and practical day-to-day usefulness while demonstrating full-stack functionality.
@@ -14,10 +26,8 @@ The MVP for Life (Lite) focuses on a scoped set of features that centralize pers
 * calendar
 * to-dos
 * notes
-* waiting on
 * bills / subscriptions
 * birthdays
-* friend board (recent comments)
 * Each widget includes a subtle item count
 * Add/edit actions handled via modal forms
 * Data loaded through a single aggregated API endpoint
@@ -103,10 +113,23 @@ The MVP for Life (Lite) focuses on a scoped set of features that centralize pers
 * Weekly goals
 * Rearrangeable dashboard widgets
 * Clickable calendar interactions
+* Waiting On module (`#25-#28`)
+* Friend/Social module (`#35-#37`)
 
 ## Stretch Goal Features
 ### Summary
 The following features are planned as stretch goals to enhance the user experience and extend the functionality of the application beyond the core MVP. These features will only be implemented if time allows after completing all core functionality.
+
+### Deferred From Original MVP
+#### Waiting On Tracker
+* Tracks items dependent on external action
+* Includes status workflow and follow-up date handling
+* Deferred after April 13 timeline rebaseline
+
+#### Friend System & Friend Board
+* Friend request flow and friend board comments
+* Private interaction model between accepted friends
+* Deferred after April 13 timeline rebaseline
 
 ### Product Enhancements
 #### Deadlines
