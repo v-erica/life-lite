@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./DashboardPage.css";
 
+const WIDGETS = ["Calendar", "To-Dos", "Notes", "Bills", "Birthdays"];
+
 export default function Dashboard() {
   const { logout, user, isAuthLoading } = useAuth();
 
@@ -20,32 +22,48 @@ export default function Dashboard() {
   return (
     <main className="dashboard-page">
       <section className="dashboard-card">
-        <h2 className="dashboard-title">Hello, {name}!</h2>
-        <div className="dashboard-avatar-wrap">
-          {user?.photo_url && showImage ? (
-            <img
-              className="dashboard-avatar"
-              src={user.photo_url}
-              alt={`${user.first_name ?? "User"} profile`}
-              onError={() => setShowImage(false)}
-            />
-          ) : (
-            <div
-              className="dashboard-avatar-fallback"
-              aria-label="Profile fallback"
+        <header className="dashboard-header">
+          <h1 className="dashboard-title">Hello, {name}!</h1>
+          <div className="dashboard-avatar-wrap">
+            {user?.photo_url && showImage ? (
+              <img
+                className="dashboard-avatar"
+                src={user.photo_url}
+                alt={`${user.first_name ?? "User"} profile`}
+                onError={() => setShowImage(false)}
+              />
+            ) : (
+              <div
+                className="dashboard-avatar-fallback"
+                aria-label="Profile fallback"
+              >
+                {initials}
+              </div>
+            )}
+          </div>
+          <div className="dashboard-actions">
+            <Link className="dashboard-settings-link" to="/settings">
+              Settings
+            </Link>
+            <Link
+              className="dashboard-settings-link"
+              onClick={logout}
+              to="/login"
             >
-              {initials}
-            </div>
-          )}
-        </div>
-        <div className="dashboard-actions">
-          <Link className="dashboard-settings-link" to="/settings">
-            Settings
-          </Link>
-          <Link className="dashboard-settings-link" onClick={logout} to="/login">
-            Logout
-          </Link>
-        </div>
+              Logout
+            </Link>
+          </div>
+        </header>
+        <section className="dashboard-grid" aria-label="Dashboard widgets">
+          {WIDGETS.map((name) => (
+            <article key={name} className="dashboard-widget">
+              <h2 className="dashboard-widget-title">{name}</h2>
+              <p className="dashboard-widget-placeholder">
+                Placeholder for {name} widget.
+              </p>
+            </article>
+          ))}
+        </section>
       </section>
     </main>
   );

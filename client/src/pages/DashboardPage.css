@@ -12,7 +12,7 @@
 .dashboard-card {
   position: relative;
   width: 100%;
-  max-width: 500px;
+  max-width: 920px;
   background: #f8f3e7;
   border: 1px solid #c6d2b8;
   border-radius: 14px;
@@ -23,7 +23,7 @@
 
 .dashboard-settings-link {
   display: inline-block;
-  margin-bottom: 14px;
+  margin-bottom: 0;
   color: #4d6e41;
   font-weight: 600;
   text-decoration: none;
@@ -35,16 +35,51 @@
 
 .dashboard-title {
   margin: 0 0 14px;
-  padding-right: 84px;
+  padding-right: 0;
   font-size: 1.9rem;
   line-height: 1.2;
   color: #314f2b;
 }
 
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: nowrap;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.dashboard-widget {
+  border: 1px solid #c6d2b8;
+  border-radius: 10px;
+  background: #fdfaf2;
+  padding: 12px;
+  min-height: 110px;
+}
+
+.dashboard-widget-title {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: #345f2f;
+}
+
+.dashboard-widget-placeholder {
+  margin: 0;
+  color: #4f5d47;
+  font-size: 0.95rem;
+}
+
 .dashboard-avatar-wrap {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: static;
+  margin-left: 8px;
+  flex-shrink: 0;
 }
 
 .dashboard-avatar {
@@ -72,4 +107,27 @@
   display: flex;
   gap: 14px;
   align-items: center;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .dashboard-actions {
+    margin-left: 0;
+    order: 3;
+    width: 100%;
+  }
+
+  .dashboard-avatar-wrap {
+    order: 2;
+  }
 }
