@@ -13,12 +13,17 @@ export default function Dashboard() {
   const [isDashboardLoading, setIsDashboardLoading] = useState(true);
   const [dashboardError, setDashboardError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("create");
+  const [activeWidget, setActiveWidget] = useState(null);
+  const [activeItem, setActiveItem] = useState(null);
+  const [modalError, setModalError] = useState(null);
 
   const name = user?.first_name ?? "there";
   const initials = (user?.first_name?.[0] ?? "U").toUpperCase();
 
   if (isAuthLoading) return <main className="dashboard-page">Loading...</main>;
 
+  //  Dashboard / General
   useEffect(() => {
     setShowImage(true);
   }, [user?.photo_url]);
@@ -54,6 +59,8 @@ export default function Dashboard() {
 
     loadDashboard();
   }, [token]);
+
+  //  Widgets / Dashboard Components
 
   const widgets = dashboardData?.widgets ?? {};
   const todoCount = widgets.todos?.length ?? 0;
@@ -94,6 +101,29 @@ export default function Dashboard() {
     }
   };
 
+  //  Reusable Modal Component
+
+  const openCreateModal = (widgetName) => {
+    setModalError(null);
+    setModalMode("create");
+    setActiveWidget(widgetName);
+    setActiveItem(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (widgetName, item) => {
+    setModalError(null);
+    setModalMode("edit");
+    setActiveWidget(widgetName);
+    setActiveItem(item);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalError(null);
+  };
+
   return (
     <main className="dashboard-page">
       <section className="dashboard-card">
@@ -117,11 +147,12 @@ export default function Dashboard() {
             )}
           </div>
           <div className="dashboard-actions">
-            <button
-              className="dashboard-open-modal"
-              onClick={() => setIsModalOpen(true)}
-            >
+            <button className="dashboard-open-modal" onClick={openCreateModal}>
               Open Create Modal
+            </button>
+
+            <button className="dashboard-open-modal" onClick={openEditModal}>
+              Open Edit Modal
             </button>
 
             <Link className="dashboard-settings-link" to="/settings">
@@ -155,10 +186,26 @@ export default function Dashboard() {
       </section>
       <Modal
         isOpen={isModalOpen}
-        title="Create Item"
-        onClose={() => setIsModalOpen(false)}
+        title={modalMode === "edit" ? "Edit Item" : "Create Item"}
+        onClose={closeModal}
       >
-        <p>Reusable modal shell for create/edit flows.</p>
+        <p>
+          {modalMode === "edit"
+            ? `Editing ${activeWidget ?? "item"}`
+            : `Creating new ${activeWidget ?? "item"}`}
+        </p>
+        <button
+          onClick={() =>
+            setModalError("Could not save item. Please try again.")
+          }
+        >
+          Submit (Not Yet Working)
+        </button>
+        {modalError && (
+          <p role="alert" className="dashboard-error">
+            {modalError}
+          </p>
+        )}
       </Modal>
     </main>
   );
