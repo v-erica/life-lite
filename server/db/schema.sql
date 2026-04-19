@@ -18,10 +18,10 @@ CREATE TABLE todos (
     id serial primary key,
     user_id int not null references users(id) on delete cascade,
     title text not null,
-    description text not null,
+    description text,
     due_date date,
-    priority text,
-    completed boolean,
+    priority text not null default 'low',
+    completed boolean not null default false,
     created_at timestamptz not null default now(),
     updated_at timestamptz
 );
