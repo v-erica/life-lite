@@ -26,8 +26,8 @@ router.post("/", requireUser, requireBody(["title"]), async (req, res) => {
       title,
       description,
       due_date,
-      priority,
-      completed,
+      priority ?? "low",
+      completed ?? false,
     );
 
     return res.status(201).json(todo);
@@ -77,9 +77,9 @@ router.patch("/:id", requireUser, async (req, res) => {
   }
 
   if (raw.description !== undefined) {
-    const description = raw.description?.trim();
+    const description = raw.description?.trim() ?? "";
 
-    if (!description && description.length > 1000)
+    if (description.length > 1000)
       return res
         .status(400)
         .json({ error: "Description is too long (max 1000)." });
@@ -90,8 +90,11 @@ router.patch("/:id", requireUser, async (req, res) => {
   if (raw.due_date !== undefined) {
     const dueDate = raw.due_date?.trim();
 
-    if (!/^\d{4}-\d{2}$/.test(due_date) || Number.isNaN(Date.parse(dueDate))) {
-      return res.status(400).json({ error: "Due date must be YYY-MM-DD." });
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
+      Number.isNaN(Date.parse(dueDate))
+    ) {
+      return res.status(400).json({ error: "Due date must be YYYY-MM-DD." });
     }
 
     updates.due_date = dueDate;
@@ -116,7 +119,7 @@ router.patch("/:id", requireUser, async (req, res) => {
         .json({ error: "Completed must be true or false." });
     }
 
-    updates.completed = raw.completed || false;
+    updates.completed = raw.completed;
   }
 
   if (Object.keys(updates).length === 0) {
