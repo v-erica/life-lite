@@ -79,28 +79,34 @@ router.patch("/:id", requireUser, async (req, res) => {
   if (raw.description !== undefined) {
     const description = raw.description?.trim();
 
-    if (!description)
+    if (!description && description.length > 1000)
       return res
         .status(400)
-        .json({ error: "Description name cannot be empty." });
+        .json({ error: "Description is too long (max 1000)." });
 
-    updates.description = description;
+    updates.description = description || null;
   }
 
   if (raw.due_date !== undefined) {
-    const due_date = raw.due_date?.trim();
+    const dueDate = raw.due_date?.trim();
 
-    if (!due_date) {
-      return res.status(400).json({ error: "Due date cannot be empty." });
+    if (!/^\d{4}-\d{2}$/.test(due_date) || Number.isNaN(Date.parse(dueDate))) {
+      return res.status(400).json({ error: "Due date must be YYY-MM-DD." });
     }
 
-    updates.due_date = due_date;
+    updates.due_date = dueDate;
   }
 
   if (raw.priority !== undefined) {
-    const priority = raw.priority?.trim();
+    const priority = raw.priority?.trim().toLowerCase();
+    const allowed = ["low", "medium", "high"];
+    if (!allowed.includes(priority)) {
+      return res
+        .status(400)
+        .json({ error: "Priority must be low, medium, or high." });
+    }
 
-    updates.priority = priority || null;
+    updates.priority = priority || "low";
   }
 
   if (raw.completed !== undefined) {
