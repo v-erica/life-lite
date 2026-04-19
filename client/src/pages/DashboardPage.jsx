@@ -124,6 +124,48 @@ export default function Dashboard() {
     setModalError(null);
   };
 
+  // Todos
+
+  const mockTodos = [
+    {
+      id: 2,
+      title: "Get ready for day",
+      priority: "high",
+      due_date: "2026-04-18",
+      completed: true,
+    },
+    {
+      id: 3,
+      title: "Get starbies",
+      priority: "high",
+      due_date: "2026-04-18",
+      completed: true,
+    },
+    {
+      id: 4,
+      title: "Get lunch",
+      priority: "high",
+      due_date: "2026-04-18",
+      completed: true,
+    },
+    {
+      id: 5,
+      title: "Get back to work",
+      priority: "high",
+      due_date: "2026-04-18",
+      completed: true,
+    },
+  ];
+
+  const formatDueDate = (dateString) => {
+    if (!dateString) return "No due date";
+    return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-US", {
+      month: "numeric",
+      day: "numeric",
+      year: "2-digit",
+    });
+  };
+
   return (
     <main className="dashboard-page">
       <section className="dashboard-card">
@@ -175,11 +217,55 @@ export default function Dashboard() {
         )}
         <section className="dashboard-grid" aria-label="Dashboard widgets">
           {WIDGETS.map((name) => (
-            <article key={name} className="dashboard-widget">
+            <article
+              key={name}
+              className={`dashboard-widget dashboard-widget-${name
+                .toLowerCase()
+                .replace(/[^a-z]/g, "")}`}
+            >
               <h2 className="dashboard-widget-title">{name}</h2>
-              <p className="dashboard-widget-placeholder">
-                {getWidgetMessage(name)}
-              </p>
+              <div className="dashboard-widget-content">
+                {name === "To-Dos" ? (
+                  <ul className="todo-list">
+                    {mockTodos.map((todo) => (
+                      <li
+                        key={todo.id}
+                        className={`todo-item ${todo.completed ? "is-complete" : ""}`}
+                      >
+                        <div className="todo-content">
+                          <div className="todo-top-row">
+                            <label className="todo-main">
+                              <input
+                                type="checkbox"
+                                checked={todo.completed}
+                                readOnly
+                                aria-label={`Mark ${todo.title} complete`}
+                              />
+                              <strong className="todo-title">
+                                {todo.title}
+                              </strong>
+                            </label>
+                          </div>
+                          <div className="todo-meta-row">
+                            <span
+                              className={`todo-priority priority-${todo.priority}`}
+                            >
+                              {todo.priority}
+                            </span>
+                            <span className="todo-due">
+                              {formatDueDate(todo.due_date)}
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="dashboard-widget-placeholder">
+                    {getWidgetMessage(name)}
+                  </p>
+                )}
+              </div>
             </article>
           ))}
         </section>
