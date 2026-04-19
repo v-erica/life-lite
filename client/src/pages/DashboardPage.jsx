@@ -125,8 +125,33 @@ export default function Dashboard() {
   };
 
   // Todos
+  const [todoFilter, setTodoFilter] = useState("today");
+  const [todoItems, setTodoItems] = useState([]);
+  const todos = todoItems;
 
-  const todos = widgets.todos ?? [];
+  useEffect(() => {
+    const loadTodos = async () => {
+      if (!token) return;
+
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API}/todos`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Failed to load to-dos.");
+        }
+
+        setTodoItems(result);
+      } catch (err) {
+        setDashboardError(err.message);
+      }
+    };
+
+    loadTodos();
+  }, [token]);
 
   //   const mockTodos = [
   //     {
@@ -159,9 +184,84 @@ export default function Dashboard() {
   //     },
   //   ];
 
+  const priorityRank = { high: 0, medium: 1, low: 2 };
+
+  const parseDateValue = (value) => {
+    if (!value) return null;
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? null : d;
+  };
+
+  const startOfDay = (date) =>
+    new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+  const isToday = (dateString) => {
+    const d = parseDateValue(dateString);
+    if (!d) return false;
+    const today = startOfDay(new Date());
+    return startOfDay(d).getTime() === today.getTime();
+  };
+
+  const isWithinWeek = (dateString) => {
+    const d = parseDateValue(dateString);
+    if (!d) return false;
+    const today = startOfDay(new Date());
+    const end = startOfDay(new Date());
+    end.setDate(today.getDate() + 7);
+    const day = startOfDay(d);
+    return day >= today && day <= end;
+  };
+
+  const visibleTodos = todos
+    .filter((t) => {
+      if (todoFilter === "completed") return Boolean(t.completed);
+      return !t.completed;
+    })
+    .filter((t) => {
+      if (todoFilter === "today") return isToday(t.due_date);
+      if (todoFilter === "week") return isWithinWeek(t.due_date);
+      if (todoFilter === "completed") return true;
+      return true;
+    })
+    .sort((a, b) => {
+      const p =
+        (priorityRank[a.priority] ?? 99) - (priorityRank[b.priority] ?? 99);
+      if (p !== 0) return p;
+
+      if (!a.due_date && !b.due_date) return 0;
+      if (!a.due_date) return 1;
+      if (!b.due_date) return -1;
+      return new Date(a.due_date) - new Date(b.due_date);
+    });
+
+  const toggleTodoCompleted = async (todo) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/todos/${todo.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ completed: !todo.completed }),
+        },
+      );
+
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error || "Failed to update to-do.");
+
+      setTodoItems((prev) => prev.map((t) => (t.id === todo.id ? result : t)));
+    } catch (err) {
+      setDashboardError(err.message);
+    }
+  };
+
   const formatDueDate = (dateString) => {
-    if (!dateString) return "No due date";
-    return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-US", {
+    const due = parseDateValue(dateString);
+    if (!due) return "";
+    return due.toLocaleDateString("en-US", {
       month: "numeric",
       day: "numeric",
       year: "2-digit",
@@ -172,7 +272,7 @@ export default function Dashboard() {
     <main className="dashboard-page">
       <section className="dashboard-card">
         <header className="dashboard-header">
-          <h1 className="dashboard-title">Hello, {name}!</h1>
+          <h1 className="dashboard-title">hello, {name}!</h1>
           <div className="dashboard-avatar-wrap">
             {user?.photo_url && showImage ? (
               <img
@@ -192,14 +292,14 @@ export default function Dashboard() {
           </div>
           <div className="dashboard-actions">
             <Link className="dashboard-settings-link" to="/settings">
-              Settings
+              settings
             </Link>
             <Link
               className="dashboard-settings-link"
               onClick={logout}
               to="/login"
             >
-              Logout
+              logout
             </Link>
           </div>
         </header>
@@ -221,6 +321,36 @@ export default function Dashboard() {
                 <h2 className="dashboard-widget-title">{name}</h2>
                 {name === "To-Dos" && (
                   <div className="todo-widget-actions">
+                    <div className="todo-filter-group">
+                      <button
+                        type="button"
+                        className={`todo-filter-btn ${todoFilter === "today" ? "is-active" : ""}`}
+                        onClick={() => setTodoFilter("today")}
+                      >
+                        today
+                      </button>
+                      <button
+                        type="button"
+                        className={`todo-filter-btn ${todoFilter === "week" ? "is-active" : ""}`}
+                        onClick={() => setTodoFilter("week")}
+                      >
+                        week
+                      </button>
+                      <button
+                        type="button"
+                        className={`todo-filter-btn ${todoFilter === "all" ? "is-active" : ""}`}
+                        onClick={() => setTodoFilter("all")}
+                      >
+                        all
+                      </button>
+                      <button
+                        type="button"
+                        className={`todo-filter-btn ${todoFilter === "completed" ? "is-active" : ""}`}
+                        onClick={() => setTodoFilter("completed")}
+                      >
+                        completed
+                      </button>
+                    </div>
                     <button
                       type="button"
                       className="todo-add-btn"
@@ -228,44 +358,20 @@ export default function Dashboard() {
                     >
                       +
                     </button>
-                    <button
-                      type="button"
-                      className="todo-edit-btn"
-                      onClick={() => openEditModal("To-Dos", todos[0])}
-                      disabled={todos.length === 0}
-                      aria-label="Edit to-do"
-                      title="Edit to-do"
-                    >
-                      <svg
-                        className="todo-edit-icon"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M16.862 3.487a2.25 2.25 0 1 1 3.182 3.182L9.75 16.963 6 18l1.037-3.75 9.825-9.825Z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M19.5 13.5v5.25A2.25 2.25 0 0 1 17.25 21H5.25A2.25 2.25 0 0 1 3 18.75V6.75A2.25 2.25 0 0 1 5.25 4.5H10.5"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </button>
                   </div>
                 )}
               </div>
               <div className="dashboard-widget-content">
                 {name === "To-Dos" ? (
-                  todos.length === 0 ? (
+                  visibleTodos.length === 0 ? (
                     <p className="dashboard-widget-placeholder">
-                      No to-dos yet.
+                      {todoFilter === "completed"
+                        ? "No completed to-dos yet."
+                        : "No to-dos yet."}
                     </p>
                   ) : (
                     <ul className="todo-list">
-                      {todos.map((todo) => (
+                      {visibleTodos.map((todo) => (
                         <li
                           key={todo.id}
                           className={`todo-item ${todo.completed ? "is-complete" : ""}`}
@@ -276,7 +382,7 @@ export default function Dashboard() {
                                 <input
                                   type="checkbox"
                                   checked={Boolean(todo.completed)}
-                                  readOnly
+                                  onChange={() => toggleTodoCompleted(todo)}
                                   aria-label={`Mark ${todo.title} complete`}
                                 />
                                 <strong className="todo-title">
@@ -285,7 +391,7 @@ export default function Dashboard() {
                               </label>
                               <button
                                 type="button"
-                                className="todo-edit-btn"
+                                className="todo-edit-btn todo-row-edit-btn"
                                 onClick={() => openEditModal("To-Dos", todo)}
                                 aria-label={`Edit ${todo.title}`}
                                 title={`Edit ${todo.title}`}
