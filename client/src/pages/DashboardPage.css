@@ -95,7 +95,7 @@
 
 .dashboard-widget-todos .dashboard-widget-header {
   padding-right: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .dashboard-widget-header .dashboard-widget-title {
@@ -253,7 +253,7 @@
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 2px;
+  gap: 10px;
 }
 
 .todo-item {
@@ -350,6 +350,8 @@
 
 .todo-content {
   min-width: 0;
+  display: grid;
+  row-gap: 3px;
 }
 
 .todo-top-row {
@@ -357,7 +359,7 @@
   gap: 8px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: -2px;
+  margin-bottom: 0;
 }
 
 .todo-main {
@@ -402,6 +404,17 @@
   text-transform: lowercase;
 }
 
+.todo-description {
+  margin: 0 0 0 20px;
+  color: #566353;
+  font-size: 0.54rem;
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .todo-row-edit-btn {
   width: 16px;
   height: 16px;
@@ -424,7 +437,7 @@
   align-items: center;
   gap: 3px;
   margin-left: 20px;
-  margin-top: -3px;
+  margin-top: 0;
 }
 
 .todo-priority {
@@ -457,6 +470,118 @@
   color: #3e8e52;
 }
 
+.todo-modal-form {
+  display: grid;
+  gap: 12px;
+}
+
+.todo-modal-field {
+  display: grid;
+  gap: 6px;
+}
+
+.todo-modal-field label {
+  color: #345f2f;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.todo-modal-field input,
+.todo-modal-field textarea,
+.todo-modal-field select {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #c6d2b8;
+  border-radius: 8px;
+  background: #fdfaf2;
+  color: #2f3f2c;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 9px 10px;
+}
+
+.todo-modal-field textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.todo-modal-field input:focus,
+.todo-modal-field textarea:focus,
+.todo-modal-field select:focus {
+  outline: none;
+  border-color: #8fa984;
+  box-shadow: 0 0 0 3px rgba(143, 169, 132, 0.2);
+}
+
+.todo-modal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.todo-modal-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #345f2f;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.todo-modal-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #9fb293;
+  border-radius: 3px;
+  background: #ffffff;
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+.todo-modal-checkbox input[type="checkbox"]::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: #4f7442;
+  transform: scale(0);
+  transition: transform 120ms ease-in-out;
+}
+
+.todo-modal-checkbox input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.todo-modal-submit-btn {
+  justify-self: end;
+  border: 1px solid #4f7442;
+  border-radius: 8px;
+  background: #5b7d4e;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: lowercase;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background-color 120ms ease-in-out;
+}
+
+.todo-modal-submit-btn:hover {
+  background: #49673e;
+}
+
+.todo-modal-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 @media (max-width: 700px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
@@ -475,5 +600,9 @@
 
   .dashboard-avatar-wrap {
     order: 2;
+  }
+
+  .todo-modal-row {
+    grid-template-columns: 1fr;
   }
 }
