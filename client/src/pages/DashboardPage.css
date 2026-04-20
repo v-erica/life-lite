@@ -66,7 +66,7 @@
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr) minmax(0, 0.9fr);
   gap: 14px;
 }
 
@@ -75,7 +75,7 @@
   border-radius: 10px;
   background: #fdfaf2;
   padding: 12px;
-  height: 150px;
+  height: 255px;
   display: flex;
   flex-direction: column;
 }
@@ -130,8 +130,79 @@
   border-radius: 999px;
 }
 
-.dashboard-widget-birthdays {
-  grid-column: 3;
+.dashboard-widget-calendar .dashboard-widget-content {
+  overflow: hidden;
+  padding-right: 0;
+}
+
+.dashboard-widget-calendar .react-calendar {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #345f2f;
+  font-size: 0.66rem;
+  font-family: inherit;
+  line-height: 1.2;
+  padding: 0;
+}
+
+.dashboard-widget-calendar .react-calendar__navigation {
+  margin-bottom: 4px;
+}
+
+.dashboard-widget-calendar .react-calendar__navigation button {
+  min-width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: #345f2f;
+  font-size: 0.72rem;
+}
+
+.dashboard-widget-calendar .react-calendar__navigation button:hover,
+.dashboard-widget-calendar
+  .react-calendar__navigation
+  button:enabled:focus-visible {
+  background: #ebe4d2;
+}
+
+.dashboard-widget-calendar .react-calendar__month-view__weekdays {
+  text-transform: lowercase;
+  font-size: 0.52rem;
+  color: #5a6956;
+}
+
+.dashboard-widget-calendar .react-calendar__month-view__weekdays__weekday {
+  padding: 3px 0;
+}
+
+.dashboard-widget-calendar .react-calendar__tile {
+  height: 24px;
+  padding: 2px;
+  border-radius: 6px;
+  background: transparent;
+  color: #2f3f2c;
+}
+
+.dashboard-widget-calendar .react-calendar__tile:hover,
+.dashboard-widget-calendar .react-calendar__tile:focus-visible {
+  background: #ebe4d2;
+}
+
+.dashboard-widget-calendar .react-calendar__tile--now {
+  background: #e4ecd9;
+  color: #2e5a2b;
+}
+
+.dashboard-widget-calendar .react-calendar__tile--active,
+.dashboard-widget-calendar .react-calendar__tile--active:hover {
+  background: #5b7d4e;
+  color: #ffffff;
+}
+
+.dashboard-widget-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  color: #9aa89a;
 }
 
 .dashboard-error {
@@ -204,6 +275,7 @@
   align-items: center;
   gap: 8px;
   height: 16px;
+  margin-right: 6px;
 }
 
 .todo-filter-btn {
@@ -374,24 +446,20 @@
 }
 
 .priority-high {
-  color: #b23333;
+  color: #cc3f3f;
 }
 
 .priority-medium {
-  color: #b66a17;
+  color: #c87a22;
 }
 
 .priority-low {
-  color: #2f7a40;
+  color: #3e8e52;
 }
 
 @media (max-width: 700px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
-  }
-
-  .dashboard-widget-birthdays {
-    grid-column: auto;
   }
 
   .dashboard-header {
