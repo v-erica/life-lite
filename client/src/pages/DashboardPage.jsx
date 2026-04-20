@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./DashboardPage.css";
 import Modal from "../components/Modal";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
-const WIDGETS = ["Calendar", "To-Dos", "Notes", "Bills", "Birthdays"];
+const WIDGETS = ["Calendar", "To-Dos", "Bills", "Events", "Notes", "Birthdays"];
 
 export default function Dashboard() {
   const { logout, user, token, isAuthLoading } = useAuth();
@@ -17,6 +19,7 @@ export default function Dashboard() {
   const [activeWidget, setActiveWidget] = useState(null);
   const [activeItem, setActiveItem] = useState(null);
   const [modalError, setModalError] = useState(null);
+  const [calendarDate, setCalendarDate] = useState(new Date());
 
   const name = user?.first_name ?? "there";
   const initials = (user?.first_name?.[0] ?? "U").toUpperCase();
@@ -66,6 +69,7 @@ export default function Dashboard() {
   const todoCount = widgets.todos?.length ?? 0;
   const notesCount = widgets.notes?.length ?? 0;
   const billsCount = widgets.bills?.length ?? 0;
+  const eventsCount = widgets.events?.length ?? 0;
   const birthdaysCount = widgets.birthdays?.length ?? 0;
   const calendarCount = widgets.calendar?.length ?? 0;
 
@@ -90,6 +94,11 @@ export default function Dashboard() {
         return billsCount === 0
           ? "No bills yet."
           : `${billsCount} item(s) loaded.`;
+
+      case "Events":
+        return eventsCount === 0
+          ? "No events yet."
+          : `${eventsCount} item(s) loaded.`;
 
       case "Birthdays":
         return birthdaysCount === 0
@@ -152,37 +161,6 @@ export default function Dashboard() {
 
     loadTodos();
   }, [token]);
-
-  //   const mockTodos = [
-  //     {
-  //       id: 2,
-  //       title: "Get ready for day",
-  //       priority: "high",
-  //       due_date: "2026-04-18",
-  //       completed: true,
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "Get starbies",
-  //       priority: "high",
-  //       due_date: "2026-04-18",
-  //       completed: true,
-  //     },
-  //     {
-  //       id: 4,
-  //       title: "Get lunch",
-  //       priority: "high",
-  //       due_date: "2026-04-18",
-  //       completed: true,
-  //     },
-  //     {
-  //       id: 5,
-  //       title: "Get back to work",
-  //       priority: "high",
-  //       due_date: "2026-04-18",
-  //       completed: true,
-  //     },
-  //   ];
 
   const priorityRank = { high: 0, medium: 1, low: 2 };
 
@@ -362,7 +340,9 @@ export default function Dashboard() {
                 )}
               </div>
               <div className="dashboard-widget-content">
-                {name === "To-Dos" ? (
+                {name === "Calendar" ? (
+                  <Calendar onChange={setCalendarDate} value={calendarDate} />
+                ) : name === "To-Dos" ? (
                   visibleTodos.length === 0 ? (
                     <p className="dashboard-widget-placeholder">
                       {todoFilter === "completed"
