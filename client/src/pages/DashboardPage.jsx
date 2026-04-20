@@ -19,6 +19,18 @@ export default function Dashboard() {
   const [activeWidget, setActiveWidget] = useState(null);
   const [activeItem, setActiveItem] = useState(null);
   const [modalError, setModalError] = useState(null);
+  const emptyTodoForm = {
+    title: "",
+    description: "",
+    due_date: "",
+    priority: "low",
+    completed: false,
+  };
+  const [todoForm, setTodoForm] = useState(emptyTodoForm);
+  const [todoFormError, setTodoFormError] = useState(null);
+  const [isTodoSubmitting, setIsTodoSubmitting] = useState(false);
+  const [recentlyCompleted, setRecentlyCompleted] = useState({});
+
   const [calendarDate, setCalendarDate] = useState(new Date());
 
   const name = user?.first_name ?? "there";
@@ -118,6 +130,8 @@ export default function Dashboard() {
     setActiveWidget(widgetName);
     setActiveItem(null);
     setIsModalOpen(true);
+    setTodoForm(emptyTodoForm);
+    setTodoFormError(null);
   };
 
   const openEditModal = (widgetName, item) => {
@@ -126,6 +140,76 @@ export default function Dashboard() {
     setActiveWidget(widgetName);
     setActiveItem(item);
     setIsModalOpen(true);
+    setTodoForm({
+      title: item.title ?? "",
+      description: item.description ?? "",
+      due_date: item.due_date ? item.due_date.slice(0, 10) : "",
+      priority: item.priority ?? "low",
+      completed: Boolean(item.completed),
+    });
+    setTodoFormError(null);
+  };
+
+  const handleTodoFieldChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setTodoForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const validateTodoForm = () => {
+    if (!todoForm.title.trim()) return "Title is required.";
+    return null;
+  };
+
+  const submitTodoForm = async (e) => {
+    e.preventDefault();
+    const validateError = validateTodoForm();
+    if (validateError) return setTodoFormError(validateError);
+
+    setIsTodoSubmitting(true);
+    setTodoFormError(null);
+
+    const payload = {
+      title: todoForm.title.trim(),
+      description: todoForm.description.trim() || null,
+      priority: todoForm.priority,
+      completed: Boolean(todoForm.completed),
+    };
+
+    if (todoForm.due_date) payload.due_date = todoForm.due_date;
+
+    const isEdit = modalMode === "edit" && activeItem?.id;
+    const url = isEdit
+      ? `${import.meta.env.VITE_API}/todos/${activeItem.id}`
+      : `${import.meta.env.VITE_API}/todos`;
+    const method = isEdit ? "PATCH" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error || "Failed to save to-do.");
+
+      setTodoItems((prev) =>
+        isEdit
+          ? prev.map((t) => (t.id === result.id ? result : t))
+          : [result, ...prev],
+      );
+      closeModal();
+    } catch (err) {
+      setTodoFormError(err.message);
+    } finally {
+      setIsTodoSubmitting(false);
+    }
   };
 
   const closeModal = () => {
@@ -193,7 +277,7 @@ export default function Dashboard() {
   const visibleTodos = todos
     .filter((t) => {
       if (todoFilter === "completed") return Boolean(t.completed);
-      return !t.completed;
+      return !t.completed || recentlyCompleted[t.id];
     })
     .filter((t) => {
       if (todoFilter === "today") return isToday(t.due_date);
@@ -213,6 +297,18 @@ export default function Dashboard() {
     });
 
   const toggleTodoCompleted = async (todo) => {
+    const isMarkingComplete = !todo.completed;
+
+    if (isMarkingComplete) {
+      setRecentlyCompleted((prev) => ({ ...prev, [todo.id]: true }));
+      setTimeout(() => {
+        setRecentlyCompleted((prev) => {
+          const next = { ...prev };
+          delete next[todo.id];
+          return next;
+        });
+      }, 2000);
+    }
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API}/todos/${todo.id}`,
@@ -351,63 +447,73 @@ export default function Dashboard() {
                     </p>
                   ) : (
                     <ul className="todo-list">
-                      {visibleTodos.map((todo) => (
-                        <li
-                          key={todo.id}
-                          className={`todo-item ${todo.completed ? "is-complete" : ""}`}
-                        >
-                          <div className="todo-content">
-                            <div className="todo-top-row">
-                              <label className="todo-main">
-                                <input
-                                  type="checkbox"
-                                  checked={Boolean(todo.completed)}
-                                  onChange={() => toggleTodoCompleted(todo)}
-                                  aria-label={`Mark ${todo.title} complete`}
-                                />
-                                <strong className="todo-title">
-                                  {todo.title}
-                                </strong>
-                              </label>
-                              <button
-                                type="button"
-                                className="todo-edit-btn todo-row-edit-btn"
-                                onClick={() => openEditModal("To-Dos", todo)}
-                                aria-label={`Edit ${todo.title}`}
-                                title={`Edit ${todo.title}`}
-                              >
-                                <svg
-                                  className="todo-edit-icon"
-                                  viewBox="0 0 24 24"
-                                  aria-hidden="true"
+                      {visibleTodos.map((todo) => {
+                        const hasDescription = Boolean(
+                          todo.description?.trim(),
+                        );
+                        return (
+                          <li
+                            key={todo.id}
+                            className={`todo-item ${todo.completed ? "is-complete" : ""}`}
+                          >
+                            <div className="todo-content">
+                              <div className="todo-top-row">
+                                <label className="todo-main">
+                                  <input
+                                    type="checkbox"
+                                    checked={Boolean(todo.completed)}
+                                    onChange={() => toggleTodoCompleted(todo)}
+                                    aria-label={`Mark ${todo.title} complete`}
+                                  />
+                                  <strong className="todo-title">
+                                    {todo.title}
+                                  </strong>
+                                </label>
+                                <button
+                                  type="button"
+                                  className="todo-edit-btn todo-row-edit-btn"
+                                  onClick={() => openEditModal("To-Dos", todo)}
+                                  aria-label={`Edit ${todo.title}`}
+                                  title={`Edit ${todo.title}`}
                                 >
-                                  <path
-                                    d="M16.862 3.487a2.25 2.25 0 1 1 3.182 3.182L9.75 16.963 6 18l1.037-3.75 9.825-9.825Z"
-                                    fill="currentColor"
-                                  />
-                                  <path
-                                    d="M19.5 13.5v5.25A2.25 2.25 0 0 1 17.25 21H5.25A2.25 2.25 0 0 1 3 18.75V6.75A2.25 2.25 0 0 1 5.25 4.5H10.5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                  />
-                                </svg>
-                              </button>
+                                  <svg
+                                    className="todo-edit-icon"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      d="M16.862 3.487a2.25 2.25 0 1 1 3.182 3.182L9.75 16.963 6 18l1.037-3.75 9.825-9.825Z"
+                                      fill="currentColor"
+                                    />
+                                    <path
+                                      d="M19.5 13.5v5.25A2.25 2.25 0 0 1 17.25 21H5.25A2.25 2.25 0 0 1 3 18.75V6.75A2.25 2.25 0 0 1 5.25 4.5H10.5"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                              {hasDescription ? (
+                                <p className="todo-description">
+                                  {todo.description.trim()}
+                                </p>
+                              ) : null}
+                              <div className="todo-meta-row">
+                                <span
+                                  className={`todo-priority priority-${todo.priority}`}
+                                >
+                                  {todo.priority}
+                                </span>
+                                <span className="todo-due">
+                                  {formatDueDate(todo.due_date)}
+                                </span>
+                              </div>
                             </div>
-                            <div className="todo-meta-row">
-                              <span
-                                className={`todo-priority priority-${todo.priority}`}
-                              >
-                                {todo.priority}
-                              </span>
-                              <span className="todo-due">
-                                {formatDueDate(todo.due_date)}
-                              </span>
-                            </div>
-                          </div>
-                        </li>
-                      ))}
+                          </li>
+                        );
+                      })}
                     </ul>
                   )
                 ) : (
@@ -425,22 +531,85 @@ export default function Dashboard() {
         title={modalMode === "edit" ? "Edit Item" : "Create Item"}
         onClose={closeModal}
       >
-        <p>
-          {modalMode === "edit"
-            ? `Editing ${activeWidget ?? "item"}`
-            : `Creating new ${activeWidget ?? "item"}`}
-        </p>
-        <button
-          onClick={() =>
-            setModalError("Could not save item. Please try again.")
-          }
-        >
-          Submit (Not Yet Working)
-        </button>
-        {modalError && (
-          <p role="alert" className="dashboard-error">
-            {modalError}
-          </p>
+        {activeWidget === "To-Dos" ? (
+          <form className="todo-modal-form" onSubmit={submitTodoForm}>
+            <div className="todo-modal-field">
+              <label htmlFor="todo-title">Title</label>
+              <input
+                id="todo-title"
+                name="title"
+                value={todoForm.title}
+                onChange={handleTodoFieldChange}
+              />
+            </div>
+
+            <div className="todo-modal-field">
+              <label htmlFor="todo-description">Description</label>
+              <textarea
+                id="todo-description"
+                name="description"
+                value={todoForm.description}
+                onChange={handleTodoFieldChange}
+              />
+            </div>
+
+            <div className="todo-modal-row">
+              <div className="todo-modal-field">
+                <label htmlFor="todo-due-date">Due Date</label>
+                <input
+                  id="todo-due-date"
+                  type="date"
+                  name="due_date"
+                  value={todoForm.due_date}
+                  onChange={handleTodoFieldChange}
+                />
+              </div>
+
+              <div className="todo-modal-field">
+                <label htmlFor="todo-priority">Priority</label>
+                <select
+                  id="todo-priority"
+                  name="priority"
+                  value={todoForm.priority}
+                  onChange={handleTodoFieldChange}
+                >
+                  <option value="low">low</option>
+                  <option value="medium">medium</option>
+                  <option value="high">high</option>
+                </select>
+              </div>
+            </div>
+
+            <label className="todo-modal-checkbox">
+              <input
+                type="checkbox"
+                name="completed"
+                checked={todoForm.completed}
+                onChange={handleTodoFieldChange}
+              />
+              completed
+            </label>
+
+            <button
+              className="todo-modal-submit-btn"
+              type="submit"
+              disabled={isTodoSubmitting}
+            >
+              {isTodoSubmitting
+                ? "saving..."
+                : modalMode === "edit"
+                  ? "save changes"
+                  : "create to-do"}
+            </button>
+
+            {todoFormError && (
+              <p role="alert" className="dashboard-error">
+                {todoFormError}
+              </p>
+            )}
+          </form>
+        ) : (
+          <p>Modal form not implemented for this widget yet.</p>
         )}
       </Modal>
     </main>
