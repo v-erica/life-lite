@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./DashboardPage.css";
@@ -30,6 +30,7 @@ export default function Dashboard() {
   const [todoFormError, setTodoFormError] = useState(null);
   const [isTodoSubmitting, setIsTodoSubmitting] = useState(false);
   const [recentlyCompleted, setRecentlyCompleted] = useState({});
+  const recentlyCompletedTimersRef = useRef({});
 
   const [calendarDate, setCalendarDate] = useState(new Date());
 
@@ -178,9 +179,9 @@ export default function Dashboard() {
       completed: Boolean(todoForm.completed),
     };
 
-    if (todoForm.due_date) payload.due_date = todoForm.due_date;
-
     const isEdit = modalMode === "edit" && activeItem?.id;
+    payload.due_date = todoForm.due_date || null;
+
     const url = isEdit
       ? `${import.meta.env.VITE_API}/todos/${activeItem.id}`
       : `${import.meta.env.VITE_API}/todos`;
@@ -246,6 +247,15 @@ export default function Dashboard() {
     loadTodos();
   }, [token]);
 
+  useEffect(() => {
+    return () => {
+      Object.values(recentlyCompletedTimersRef.current).forEach((timerId) => {
+        clearTimeout(timerId);
+      });
+      recentlyCompletedTimersRef.current = {};
+    };
+  }, []);
+
   const priorityRank = { high: 0, medium: 1, low: 2 };
 
   const parseDateValue = (value) => {
@@ -299,15 +309,32 @@ export default function Dashboard() {
   const toggleTodoCompleted = async (todo) => {
     const isMarkingComplete = !todo.completed;
 
+    const existingTimer = recentlyCompletedTimersRef.current[todo.id];
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+      delete recentlyCompletedTimersRef.current[todo.id];
+    }
+
     if (isMarkingComplete) {
       setRecentlyCompleted((prev) => ({ ...prev, [todo.id]: true }));
-      setTimeout(() => {
+
+      const timerId = setTimeout(() => {
         setRecentlyCompleted((prev) => {
           const next = { ...prev };
           delete next[todo.id];
           return next;
         });
+        delete recentlyCompletedTimersRef.current[todo.id];
       }, 2000);
+
+      recentlyCompletedTimersRef.current[todo.id] = timerId;
+    } else {
+      setRecentlyCompleted((prev) => {
+        if (!prev[todo.id]) return prev;
+        const next = { ...prev };
+        delete next[todo.id];
+        return next;
+      });
     }
     try {
       const response = await fetch(
@@ -340,6 +367,62 @@ export default function Dashboard() {
       day: "numeric",
       year: "2-digit",
     });
+  };
+
+  const toDateKey = (value) => {
+    const d = parseDateValue(value);
+    if (!d) return null;
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  };
+
+  const calendarIndicatorsByDate = useMemo(() => {
+    const map = {};
+
+    const add = (dateValue, type) => {
+      const key = toDateKey(dateValue);
+      if (!key) return;
+      if (!map[key]) map[key] = [];
+      map[key].push(type);
+    };
+
+    todoItems.forEach((t) => add(t.due_date, "todo"));
+    (widgets.bills ?? []).forEach((b) =>
+      add(b.due_date ?? b.next_due_date, "bill"),
+    );
+    (widgets.events ?? []).forEach((e) => add(e.event_date ?? e.date, "event"));
+    (widgets.birthdays ?? []).forEach((b) =>
+      add(b.birthday ?? b.birth_date, "birthday"),
+    );
+
+    return map;
+  }, [todoItems, widgets.bills, widgets.events, widgets.birthdays]);
+
+  const renderCalendarTileContent = ({ date, view }) => {
+    if (view !== "month") return null;
+
+    const key = toDateKey(date);
+    const indicators = calendarIndicatorsByDate[key] ?? [];
+    if (indicators.length === 0) return null;
+
+    const visible = indicators.slice(0, 3);
+    const overflow = indicators.length - visible.length;
+
+    return (
+      <div className="calendar-tile-indicators" aria-hidden="true">
+        {visible.map((type, idx) => (
+          <span
+            key={`${type}-${idx}`}
+            className={`calendar-tile-dot calendar-tile-dot-${type}`}
+          />
+        ))}
+        {overflow > 0 ? (
+          <span className="calendar-tile-overflow">...</span>
+        ) : null}
+      </div>
+    );
   };
 
   return (
@@ -437,7 +520,11 @@ export default function Dashboard() {
               </div>
               <div className="dashboard-widget-content">
                 {name === "Calendar" ? (
-                  <Calendar onChange={setCalendarDate} value={calendarDate} />
+                  <Calendar
+                    onChange={setCalendarDate}
+                    value={calendarDate}
+                    tileContent={renderCalendarTileContent}
+                  />
                 ) : name === "To-Dos" ? (
                   visibleTodos.length === 0 ? (
                     <p className="dashboard-widget-placeholder">
