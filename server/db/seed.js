@@ -2,6 +2,7 @@ import db from "#db/client";
 
 import { createUser } from "#db/queries/users";
 import { createTodo } from "#db/queries/todos";
+import { createEvent } from "#db/queries/events";
 
 await db.connect();
 await seed();
@@ -58,6 +59,35 @@ async function seed() {
       todo.due_date,
       todo.priority ?? "low",
       todo.completed ?? false,
+    );
+  }
+
+  const events = [
+    {
+      user_id: 1,
+      title: "Capstone Defense",
+      event_date: "2026-04-22",
+    },
+    {
+      user_id: 1,
+      title: "Capstone Presentation",
+      event_date: "2026-04-27",
+    },
+    {
+      user_id: 1,
+      title: "Graduation!!",
+      event_date: "2026-04-29",
+    },
+  ];
+
+  for (const event of events) {
+    await createEvent(
+      event.user_id,
+      event.title,
+      event.description,
+      event.event_date ?? new Date().toISOString().slice(0, 10),
+      event.start_time,
+      event.end_time,
     );
   }
 }
