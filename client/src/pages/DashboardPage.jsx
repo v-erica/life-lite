@@ -31,8 +31,8 @@ export default function Dashboard() {
   const [isTodoSubmitting, setIsTodoSubmitting] = useState(false);
   const [recentlyCompleted, setRecentlyCompleted] = useState({});
   const recentlyCompletedTimersRef = useRef({});
-
   const [calendarDate, setCalendarDate] = useState(new Date());
+  const [eventItems, setEventItems] = useState([]);
 
   const name = user?.first_name ?? "there";
   const initials = (user?.first_name?.[0] ?? "U").toUpperCase();
@@ -369,6 +369,26 @@ export default function Dashboard() {
     });
   };
 
+  const formatEventDate = (dateString) => {
+    const d = parseDateValue(dateString);
+    if (!d) return "";
+    return d.toLocaleDateString("en-US", {
+      month: "numeric",
+      day: "numeric",
+      year: "2-digit",
+    });
+  };
+
+  const formatEventTime = (isoString) => {
+    if (!isoString) return "";
+    const d = parseDateValue(isoString);
+    if (!d) return "";
+    return d.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  };
+
   const toDateKey = (value) => {
     const d = parseDateValue(value);
     if (!d) return null;
@@ -424,6 +444,34 @@ export default function Dashboard() {
       </div>
     );
   };
+
+  // EVENTS WIDGET //
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      if (!token) return;
+
+      try {
+        const response = await fetch(`${impoer.meta.env.VITE_API}/events`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Failed to load events.");
+        }
+
+        setEventItems(result);
+      } catch (err) {
+        setDashboardError(err.message);
+      }
+    };
+
+    loadEvents();
+  }, [token]);
+
+  const events = eventItems;
 
   return (
     <main className="dashboard-page">
