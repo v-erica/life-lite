@@ -90,14 +90,18 @@ router.patch("/:id", requireUser, async (req, res) => {
   if (raw.due_date !== undefined) {
     const dueDate = raw.due_date?.trim();
 
-    if (
-      !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
-      Number.isNaN(Date.parse(dueDate))
-    ) {
-      return res.status(400).json({ error: "Due date must be YYYY-MM-DD." });
-    }
+    if (dueDate === "" || raw.due_date === null) {
+      updates.due_date = null;
+    } else {
+      if (
+        !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
+        Number.isNaN(Date.parse(dueDate))
+      ) {
+        return res.status(400).json({ error: "Due date must be YYYY-MM-DD." });
+      }
 
-    updates.due_date = dueDate;
+      updates.due_date = dueDate;
+    }
   }
 
   if (raw.priority !== undefined) {
