@@ -18,7 +18,6 @@ export default function Dashboard() {
   const [modalMode, setModalMode] = useState("create");
   const [activeWidget, setActiveWidget] = useState(null);
   const [activeItem, setActiveItem] = useState(null);
-  const [modalError, setModalError] = useState(null);
   const emptyTodoForm = {
     title: "",
     description: "",
@@ -26,6 +25,16 @@ export default function Dashboard() {
     priority: "low",
     completed: false,
   };
+  const emptyEventForm = {
+    title: "",
+    description: "",
+    event_date: "",
+    start_time: "",
+    end_time: "",
+  };
+  const [eventForm, setEventForm] = useState(emptyEventForm);
+  const [eventFormError, setEventFormError] = useState(null);
+  const [isEventSubmitting, setIsEventSubmitting] = useState(false);
   const [todoForm, setTodoForm] = useState(emptyTodoForm);
   const [todoFormError, setTodoFormError] = useState(null);
   const [isTodoSubmitting, setIsTodoSubmitting] = useState(false);
@@ -125,18 +134,28 @@ export default function Dashboard() {
 
   //  Reusable Modal Component
 
+  const toTimeInputValue = (value) => {
+    if (!value) return "";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "";
+
+    const pad = (n) => String(n).padStart(2, "0");
+
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+
   const openCreateModal = (widgetName) => {
-    setModalError(null);
     setModalMode("create");
     setActiveWidget(widgetName);
     setActiveItem(null);
     setIsModalOpen(true);
     setTodoForm(emptyTodoForm);
     setTodoFormError(null);
+    setEventForm(emptyEventForm);
+    setEventFormError(null);
   };
 
   const openEditModal = (widgetName, item) => {
-    setModalError(null);
     setModalMode("edit");
     setActiveWidget(widgetName);
     setActiveItem(item);
@@ -149,6 +168,14 @@ export default function Dashboard() {
       completed: Boolean(item.completed),
     });
     setTodoFormError(null);
+    setEventForm({
+      title: item.title ?? "",
+      description: item.description ?? "",
+      event_date: item.event_date ? item.event_date.slice(0, 10) : "",
+      start_time: toTimeInputValue(item.start_time),
+      end_time: toTimeInputValue(item.end_time),
+    });
+    setEventFormError(null);
   };
 
   const handleTodoFieldChange = (e) => {
@@ -213,9 +240,98 @@ export default function Dashboard() {
     }
   };
 
+  const handleEventFieldChange = (e) => {
+    const { name, value } = e.target;
+    setEventForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const combineEventDateTime = (dateValue, timeValue) => {
+    if (!dateValue || !timeValue) return null;
+    const combined = `${dateValue}T${timeValue}`;
+    const d = new Date(combined);
+    if (Number.isNaN(d.getTime())) return null;
+    return d.toISOString();
+  };
+
+  const validateEventForm = () => {
+    if (!eventForm.title.trim()) return "Title is required.";
+    if (!eventForm.event_date.trim()) return "Event date is required.";
+
+    const startDateTime = combineEventDateTime(
+      eventForm.event_date,
+      eventForm.start_time,
+    );
+    const endDateTime = combineEventDateTime(eventForm.event_date, eventForm.end_time);
+
+    if (eventForm.start_time && !startDateTime) {
+      return "Start time is invalid.";
+    }
+
+    if (eventForm.end_time && !endDateTime) {
+      return "End time is invalid.";
+    }
+
+    if (startDateTime && endDateTime) {
+      if (new Date(endDateTime) <= new Date(startDateTime)) {
+        return "End time must be after start time.";
+      }
+    }
+    return null;
+  };
+
+  const submitEventForm = async (e) => {
+    e.preventDefault();
+
+    const validationError = validateEventForm();
+    if (validationError) return setEventFormError(validationError);
+
+    setIsEventSubmitting(true);
+    setEventFormError(null);
+
+    const payload = {
+      title: eventForm.title.trim(),
+      description: eventForm.description.trim() || null,
+      event_date: eventForm.event_date,
+      start_time: combineEventDateTime(eventForm.event_date, eventForm.start_time),
+      end_time: combineEventDateTime(eventForm.event_date, eventForm.end_time),
+    };
+
+    const isEdit = modalMode === "edit" && activeItem?.id;
+    const url = isEdit
+      ? `${import.meta.env.VITE_API}/events/${activeItem.id}`
+      : `${import.meta.env.VITE_API}/events`;
+    const method = isEdit ? "PATCH" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error || "Failed to save event.");
+
+      setEventItems((prev) =>
+        isEdit
+          ? prev.map((ev) => (ev.id === result.id ? result : ev))
+          : [result, ...prev],
+      );
+
+      closeModal();
+    } catch (err) {
+      setEventFormError(err.message);
+    } finally {
+      setIsEventSubmitting(false);
+    }
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
-    setModalError(null);
   };
 
   // Todos
@@ -412,13 +528,14 @@ export default function Dashboard() {
     (widgets.bills ?? []).forEach((b) =>
       add(b.due_date ?? b.next_due_date, "bill"),
     );
-    (widgets.events ?? []).forEach((e) => add(e.event_date ?? e.date, "event"));
+    const eventSource = eventItems.length > 0 ? eventItems : (widgets.events ?? []);
+    eventSource.forEach((e) => add(e.event_date ?? e.date, "event"));
     (widgets.birthdays ?? []).forEach((b) =>
       add(b.birthday ?? b.birth_date, "birthday"),
     );
 
     return map;
-  }, [todoItems, widgets.bills, widgets.events, widgets.birthdays]);
+  }, [todoItems, eventItems, widgets.bills, widgets.events, widgets.birthdays]);
 
   const renderCalendarTileContent = ({ date, view }) => {
     if (view !== "month") return null;
@@ -452,7 +569,7 @@ export default function Dashboard() {
       if (!token) return;
 
       try {
-        const response = await fetch(`${impoer.meta.env.VITE_API}/events`, {
+        const response = await fetch(`${import.meta.env.VITE_API}/events`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -565,6 +682,15 @@ export default function Dashboard() {
                     </button>
                   </div>
                 )}
+                {name === "Events" && (
+                  <button
+                    type="button"
+                    className="todo-add-btn"
+                    onClick={() => openCreateModal("Events")}
+                  >
+                    +
+                  </button>
+                )}
               </div>
               <div className="dashboard-widget-content">
                 {name === "Calendar" ? (
@@ -651,6 +777,69 @@ export default function Dashboard() {
                       })}
                     </ul>
                   )
+                ) : name === "Events" ? (
+                  events.length === 0 ? (
+                    <p className="dashboard-widget-placeholder">
+                      No events yet.
+                    </p>
+                  ) : (
+                    <ul className="event-list">
+                      {events.map((event) => (
+                        <li key={event.id} className="event-item">
+                          <div className="event-content">
+                            <div className="event-top-row">
+                              <strong className="event-title">
+                                {event.title}
+                              </strong>
+                              <button
+                                type="button"
+                                className="todo-edit-btn todo-row-edit-btn"
+                                onClick={() => openEditModal("Events", event)}
+                                aria-label={`Edit ${event.title}`}
+                                title={`Edit ${event.title}`}
+                              >
+                                <svg
+                                  className="todo-edit-icon"
+                                  viewBox="0 0 24 24"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    d="M16.862 3.487a2.25 2.25 0 1 1 3.182 3.182L9.75 16.963 6 18l1.037-3.75 9.825-9.825Z"
+                                    fill="currentColor"
+                                  />
+                                  <path
+                                    d="M19.5 13.5v5.25A2.25 2.25 0 0 1 17.25 21H5.25A2.25 2.25 0 0 1 3 18.75V6.75A2.25 2.25 0 0 1 5.25 4.5H10.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                            {event.description?.trim() ? (
+                              <p className="event-description">
+                                {event.description.trim()}
+                              </p>
+                            ) : null}
+                            <div className="event-meta-row">
+                              <span className="event-date">
+                                {formatEventDate(event.event_date)}
+                              </span>
+                              {event.start_time ? (
+                                <span className="event-time">
+                                  {formatEventTime(event.start_time)}
+                                  {event.end_time
+                                    ? ` - ${formatEventTime(event.end_time)}`
+                                    : ""}
+                                </span>
+                              ) : null}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )
                 ) : (
                   <p className="dashboard-widget-placeholder">
                     {getWidgetMessage(name)}
@@ -666,7 +855,81 @@ export default function Dashboard() {
         title={modalMode === "edit" ? "Edit Item" : "Create Item"}
         onClose={closeModal}
       >
-        {activeWidget === "To-Dos" ? (
+        {activeWidget === "Events" ? (
+          <form className="event-modal-form" onSubmit={submitEventForm}>
+            <div className="todo-modal-field">
+              <label htmlFor="event-title">Title</label>
+              <input
+                id="event-title"
+                name="title"
+                value={eventForm.title}
+                onChange={handleEventFieldChange}
+              />
+            </div>
+
+            <div className="todo-modal-field">
+              <label htmlFor="event-description">Description</label>
+              <textarea
+                id="event-description"
+                name="description"
+                value={eventForm.description}
+                onChange={handleEventFieldChange}
+              />
+            </div>
+
+            <div className="todo-modal-row">
+              <div className="todo-modal-field">
+                <label htmlFor="event-date">Event Date</label>
+                <input
+                  type="date"
+                  id="event-date"
+                  name="event_date"
+                  value={eventForm.event_date}
+                  onChange={handleEventFieldChange}
+                />
+              </div>
+              <div className="todo-modal-field">
+                <label htmlFor="event-start">Start Time</label>
+                <input
+                  type="time"
+                  id="event-start"
+                  name="start_time"
+                  value={eventForm.start_time}
+                  onChange={handleEventFieldChange}
+                />
+              </div>
+            </div>
+
+            <div className="todo-modal-field">
+              <label htmlFor="event-end">End Time</label>
+              <input
+                type="time"
+                id="event-end"
+                name="end_time"
+                value={eventForm.end_time}
+                onChange={handleEventFieldChange}
+              />
+            </div>
+
+            <button
+              className="todo-modal-submit-btn"
+              type="submit"
+              disabled={isEventSubmitting}
+            >
+              {isEventSubmitting
+                ? "Saving..."
+                : modalMode === "edit"
+                  ? "Save changes"
+                  : "Create event"}
+            </button>
+
+            {eventFormError && (
+              <p role="alert" className="dashboard-error">
+                {eventFormError}
+              </p>
+            )}
+          </form>
+        ) : activeWidget === "To-Dos" ? (
           <form className="todo-modal-form" onSubmit={submitTodoForm}>
             <div className="todo-modal-field">
               <label htmlFor="todo-title">Title</label>
