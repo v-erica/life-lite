@@ -98,6 +98,11 @@
   margin-bottom: 14px;
 }
 
+.dashboard-widget-events .dashboard-widget-header {
+  padding-right: 2px;
+  margin-bottom: 14px;
+}
+
 .dashboard-widget-header .dashboard-widget-title {
   margin: 0;
 }
@@ -211,11 +216,11 @@
 }
 
 .calendar-tile-dot-event {
-  background: #4c6fb3;
+  background: #7a5cc9;
 }
 
 .calendar-tile-dot-birthday {
-  background: #cc3f3f;
+  background: #d45555;
 }
 
 .calendar-tile-overflow {
@@ -234,13 +239,13 @@
 }
 
 .dashboard-widget-calendar .react-calendar__tile--active .calendar-tile-dot-event {
-  background: #a9c8f0;
+  background: #c9b7f7;
 }
 
 .dashboard-widget-calendar
   .react-calendar__tile--active
   .calendar-tile-dot-birthday {
-  background: #ecb1b1;
+  background: #f1bcbc;
 }
 
 .dashboard-widget-calendar .react-calendar__tile--active .calendar-tile-overflow {
@@ -532,7 +537,73 @@
   color: #3e8e52;
 }
 
+.event-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.event-item {
+  display: block;
+  font-size: 0.7rem;
+  color: #2f3f2c;
+}
+
+.event-content {
+  min-width: 0;
+  display: grid;
+  row-gap: 3px;
+}
+
+.event-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.event-title {
+  font-size: 0.72rem;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.event-description {
+  margin: 0;
+  color: #566353;
+  font-size: 0.54rem;
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-meta-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 0;
+}
+
+.event-date,
+.event-time {
+  color: #566353;
+  font-size: 0.54rem;
+  line-height: 1;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
 .todo-modal-form {
+  display: grid;
+  gap: 12px;
+}
+
+.event-modal-form {
   display: grid;
   gap: 12px;
 }
@@ -581,6 +652,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+
+.todo-modal-row > .todo-modal-field {
+  min-width: 0;
 }
 
 .todo-modal-checkbox {
