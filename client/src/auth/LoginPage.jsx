@@ -13,6 +13,7 @@ export default function Login() {
   const tryLogin = async (formData) => {
     const identifier = formData.get("identifier")?.trim();
     const password = formData.get("password")?.trim();
+    setError(null);
 
     if (!identifier || !password) {
       setError("Username/email and password are required.");
