@@ -46,6 +46,8 @@ app.use("/todos", todosRouter);
 
 app.use("/events", eventsRouter);
 
+// todo: import bills router and set up app.use here
+
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found." });
 });
