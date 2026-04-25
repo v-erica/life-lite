@@ -1,6 +1,5 @@
 import express from "express";
 const router = express.Router();
-export default router;
 
 import {
   createUser,
@@ -18,6 +17,10 @@ router.post(
     const { email, password, first_name, birthday, username, photo_url } =
       req.body;
 
+    // WHY (Functionality): requireBody (above) only checks that the field keys
+    // exist in the request body. This additional check ensures none of the
+    // required fields are blank or whitespace-only strings, which requireBody
+    // would not catch.
     if (!email?.trim() || !password?.trim() || !first_name?.trim()) {
       return res
         .status(400)
@@ -59,6 +62,9 @@ router.post(
   async (req, res) => {
     const { identifier, password } = req.body;
 
+    // WHY (Functionality): Same as the register route — requireBody checks field
+    // presence, but this trim check catches whitespace-only strings that would
+    // otherwise reach the database query as meaningless input.
     if (!identifier?.trim() || !password?.trim()) {
       return res
         .status(400)
@@ -167,3 +173,10 @@ router.patch("/me", requireUser, async (req, res) => {
     return res.status(500).json({ error: "Internal server error." });
   }
 });
+
+// WHY (Code Style): Export the router at the bottom of the file, after all routes
+// are defined, so the full route map is visible before anything is exported.
+// Placing the export at the top (before the routes) works in JavaScript but makes
+// the file harder to read — the reader sees the export before understanding what
+// is being exported.
+export default router;

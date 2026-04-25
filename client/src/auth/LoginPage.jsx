@@ -3,7 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./LoginPage.css";
 
-export default function Login() {
+/**
+ * Login page — lets an existing user sign in with their email/username and password.
+ * Calls the `login` function from AuthContext and redirects to the dashboard on success.
+ */
+// WHY (Code Style): The component name should match the file name (LoginPage.jsx → LoginPage).
+// Consistent PascalCase naming makes it easy to find the right component when reading imports.
+export default function LoginPage() {
   const { login } = useAuth();
 
   const navigate = useNavigate();
