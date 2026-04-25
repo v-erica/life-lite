@@ -1,6 +1,17 @@
 import db from "#db/client";
 import bcrypt from "bcrypt";
 
+// WHY (Functionality): Pre-compute a dummy bcrypt hash at startup.
+// getUserByCredentials uses this when no matching user is found so that
+// bcrypt.compare still runs and login response time stays consistent.
+// Skipping bcrypt for missing users would let attackers guess valid
+// usernames just by measuring how long the request takes (timing attack).
+const DUMMY_HASH = bcrypt.hashSync("timing-normalization-noop", 10);
+
+/**
+ * Creates a new user row, hashing their password before inserting.
+ * Returns the new user object (without password_hash).
+ */
 export async function createUser(
   email,
   password,
@@ -40,6 +51,11 @@ export async function createUser(
   }
 }
 
+/**
+ * Looks up a user by email or username and verifies their password.
+ * Returns the user object (without password_hash) on success, or null if
+ * the credentials are invalid.
+ */
 export async function getUserByCredentials(identifier, password) {
   const sql = `
   select 
@@ -55,16 +71,24 @@ export async function getUserByCredentials(identifier, password) {
     rows: [user],
   } = await db.query(sql, [identifier]);
 
-  if (!user) return null;
+  // WHY (Functionality): Always run bcrypt.compare, even when no user was found.
+  // If we returned early here, the server would respond much faster for unknown
+  // emails than for wrong passwords — and an attacker could use that timing
+  // difference to enumerate valid usernames. Using DUMMY_HASH when no user
+  // exists keeps the response time consistent regardless of the input.
+  const hash = user?.password_hash ?? DUMMY_HASH;
+  const isValid = await bcrypt.compare(password, hash);
 
-  const isValid = await bcrypt.compare(password, user.password_hash);
-
-  if (!isValid) return null;
+  if (!user || !isValid) return null;
 
   delete user.password_hash;
   return user;
 }
 
+/**
+ * Fetches a single user by their numeric ID.
+ * Returns the user object (without password_hash), or null if not found.
+ */
 export async function getUserById(id) {
   const sql = `
     select 
@@ -87,6 +111,11 @@ export async function getUserById(id) {
   return user;
 }
 
+/**
+ * Updates allowed profile fields for a user by ID.
+ * Accepts a partial `updates` object; only provided fields are changed.
+ * Returns the updated user object, or null if the user was not found.
+ */
 export async function updateUserById(id, updates) {
   const setClauses = [];
   const values = [];

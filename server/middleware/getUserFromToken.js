@@ -1,6 +1,12 @@
 import { getUserById } from "#db/queries/users";
 import { verifyToken } from "#utils/jwt";
 
+/**
+ * Middleware that reads the Authorization header, verifies the JWT,
+ * and attaches the matching user to req.user.
+ * If no token is present or the token is invalid, it either skips
+ * silently (missing token) or returns a 401 (bad token).
+ */
 export default async function getUserFromToken(req, res, next) {
   const authorization = req.get("authorization");
 
