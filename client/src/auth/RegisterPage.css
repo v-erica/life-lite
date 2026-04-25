@@ -87,3 +87,13 @@
 .register-link:hover {
   text-decoration: underline;
 }
+
+/* WHY (Code Style): Replaces the deprecated <center> tag that was used to label
+   the optional fields section. Styles belong in CSS, not in HTML attributes. */
+.register-divider {
+  margin: 4px 0 0;
+  text-align: center;
+  color: #6b7c65;
+  font-size: 0.875rem;
+  font-weight: 500;
+}

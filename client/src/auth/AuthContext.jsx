@@ -10,12 +10,14 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
+  // Clears all auth state from memory and removes the stored token.
   const clearSession = () => {
     setToken(null);
     setUser(null);
     localStorage.removeItem(TOKEN_KEY);
   };
 
+  // Fetches the logged-in user's profile from the API using a JWT.
   const fetchCurrentUser = async (jwt) => {
     const response = await fetch(`${API}/users/me`, {
       headers: { Authorization: `Bearer ${jwt}` },
@@ -32,6 +34,7 @@ export function AuthProvider({ children }) {
     return result;
   };
 
+  // Saves the token to state + localStorage, then fetches the user profile.
   const establishSession = async (nextToken) => {
     setToken(nextToken);
 
@@ -40,6 +43,7 @@ export function AuthProvider({ children }) {
     return fetchCurrentUser(nextToken);
   };
 
+  // Registers a new user and immediately establishes a session with the returned token.
   const register = async (credentials) => {
     const response = await fetch(`${API}/users/register`, {
       method: "POST",
@@ -57,6 +61,7 @@ export function AuthProvider({ children }) {
     return nextToken;
   };
 
+  // Logs in an existing user and establishes a session with the returned token.
   const login = async (credentials) => {
     const response = await fetch(`${API}/users/login`, {
       method: "POST",
@@ -74,10 +79,12 @@ export function AuthProvider({ children }) {
     return nextToken;
   };
 
+  // Logs out the current user by clearing all session state.
   const logout = () => {
     clearSession();
   };
 
+  // Sends updated profile fields to the API and refreshes the user in state.
   const updateProfile = async (profileUpdates) => {
     if (!token) throw new Error("You must be logged in.");
 
@@ -112,7 +119,13 @@ export function AuthProvider({ children }) {
       try {
         setToken(storedToken);
         await fetchCurrentUser(storedToken);
-      } catch {
+      } catch (err) {
+        // WHY (Functionality): Log the error instead of silently swallowing it.
+        // An empty catch block hides unexpected problems (network failures, bad
+        // responses) that would otherwise be invisible during development.
+        // clearSession() is already called inside fetchCurrentUser on a bad token,
+        // so this catch is only reached for truly unexpected errors.
+        console.error("Auth boot failed:", err.message);
       } finally {
         setIsAuthLoading(false);
       }
@@ -134,6 +147,10 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+/**
+ * Custom hook for accessing auth state and actions anywhere in the component tree.
+ * Must be used inside AuthProvider — throws a clear error if it isn't.
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");

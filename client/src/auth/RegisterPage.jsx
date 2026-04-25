@@ -3,7 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./RegisterPage.css";
 
-export default function Register() {
+/**
+ * Register page — lets a new user create an account.
+ * Required fields are first name, email, and password. All others are optional.
+ * Calls the `register` function from AuthContext and redirects to the dashboard on success.
+ */
+// WHY (Code Style): The component name should match the file name (RegisterPage.jsx → RegisterPage).
+// Consistent PascalCase naming makes it easy to find the right component when reading imports.
+export default function RegisterPage() {
   const { register } = useAuth();
 
   const navigate = useNavigate();
@@ -49,14 +56,19 @@ export default function Register() {
           </label>
           <label className="register-field">
             Email
-            <input type="text" name="email" required />
+            {/* WHY (Functionality): type="email" tells the browser this is an email field.
+                The browser will show a proper keyboard on mobile, validate the format before
+                submitting, and improve accessibility. type="text" works but misses all of that. */}
+            <input type="email" name="email" required />
           </label>
           <label className="register-field">
             Password
             <input type="password" name="password" required />
           </label>
-          <br></br>
-          <center>-- Optional --</center>
+          {/* WHY (Code Style): <br> for layout spacing and <center> are deprecated HTML.
+              Use a semantic element with a CSS class instead so spacing and alignment
+              are controlled in the stylesheet, not in the markup. */}
+          <p className="register-divider">-- Optional --</p>
           <label className="register-field">
             Username
             <input type="text" name="username" />
