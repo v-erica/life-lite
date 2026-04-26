@@ -83,15 +83,17 @@
   </g>
 
   <g transform="translate(990,390)">
-    <rect class="table" width="250" height="180"/>
+    <rect class="table" width="250" height="224"/>
     <rect class="head-core" width="250" height="36"/>
     <text class="head-text" x="125" y="24" text-anchor="middle">bills</text>
     <text class="cell" x="14" y="60">id [PK]</text>
     <text class="cell" x="14" y="82">user_id [FK -> users.id]</text>
     <text class="cell" x="14" y="104">title, amount</text>
-    <text class="cell" x="14" y="126">due_month, due_day</text>
+    <text class="cell" x="14" y="126">next_due_date</text>
     <text class="cell" x="14" y="148">recurrence</text>
-    <text class="cell" x="14" y="170">created_at, updated_at</text>
+    <text class="cell" x="14" y="170">paid, last_paid_at</text>
+    <text class="cell" x="14" y="192">is_active</text>
+    <text class="cell" x="14" y="214">created_at, updated_at</text>
   </g>
 
   <g transform="translate(1290,390)">

@@ -3,6 +3,7 @@ import db from "#db/client";
 import { createUser } from "#db/queries/users";
 import { createTodo } from "#db/queries/todos";
 import { createEvent } from "#db/queries/events";
+import { createBill } from "#db/queries/bills";
 
 await db.connect();
 await seed();
@@ -88,6 +89,47 @@ async function seed() {
       event.event_date ?? new Date().toISOString().slice(0, 10),
       event.start_time,
       event.end_time,
+    );
+  }
+
+  const bills = [
+    {
+      user_id: 1,
+      title: "SDG&E",
+      amount: 100,
+      next_due_date: "2026-04-10",
+      recurrence: "monthly",
+      paid: false,
+      is_active: true,
+    },
+    {
+      user_id: 1,
+      title: "Rent",
+      amount: 2000,
+      next_due_date: "2026-04-01",
+      recurrence: "monthly",
+      paid: false,
+      is_active: true,
+    },
+    {
+      user_id: 1,
+      title: "Mohela Student Loans",
+      amount: 200,
+      recurrence: "monthly",
+      is_active: true,
+    },
+  ];
+
+  for (const bill of bills) {
+    await createBill(
+      bill.user_id,
+      bill.title,
+      bill.amount,
+      bill.next_due_date ?? new Date().toISOString().slice(0, 10),
+      bill.recurrence ?? "monthly",
+      bill.paid ?? false,
+      bill.last_paid_at,
+      bill.is_active ?? true,
     );
   }
 }
