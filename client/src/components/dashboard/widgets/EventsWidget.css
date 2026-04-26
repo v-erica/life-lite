@@ -14,7 +14,7 @@
 .event-item {
   display: block;
   font-size: 0.7rem;
-  color: #2f3f2c;
+  color: var(--lagoon);
 }
 
 .event-content {
@@ -39,7 +39,7 @@
 
 .event-description {
   margin: 0;
-  color: #566353;
+  color: var(--muted);
   font-size: 0.54rem;
   line-height: 1;
   font-weight: 500;
@@ -57,7 +57,7 @@
 
 .event-date,
 .event-time {
-  color: #566353;
+  color: var(--muted);
   font-size: 0.54rem;
   line-height: 1;
   font-weight: 600;

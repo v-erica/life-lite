@@ -3,20 +3,17 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background:
-    radial-gradient(circle at 20% 15%, #f7f1df 0%, transparent 40%),
-    radial-gradient(circle at 85% 90%, #d9e5cf 0%, transparent 35%),
-    linear-gradient(180deg, #efe7d6 0%, #e4ddcb 100%);
+  background: var(--lagoon);
 }
 
 .register-card {
   width: 100%;
   max-width: 420px;
-  background: #f8f3e7;
-  border: 1px solid #c6d2b8;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 28px;
-  box-shadow: 0 14px 28px rgba(64, 87, 60, 0.18);
+  box-shadow: 0 14px 28px rgba(36, 53, 51, 0.18);
   text-align: left;
 }
 
@@ -24,7 +21,7 @@
   margin: 0 0 16px;
   font-size: 1.75rem;
   line-height: 1.2;
-  color: #314f2b;
+  color: var(--lagoon);
 }
 
 .register-form {
@@ -38,21 +35,21 @@
   flex-direction: column;
   gap: 6px;
   font-size: 0.95rem;
-  color: #3f5a38;
+  color: var(--moss);
   font-weight: 600;
 }
 
 .register-field input {
-  border: 1px solid #9fb48f;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 1rem;
-  background: #fdfaf2;
-  color: #2f3827;
+  background: var(--surface);
+  color: var(--lagoon);
 }
 
 .register-field input:focus {
-  outline: 2px solid #6f8f5f;
+  outline: 2px solid var(--amber);
   outline-offset: 1px;
 }
 
@@ -61,25 +58,25 @@
   border: none;
   border-radius: 8px;
   padding: 10px 14px;
-  background: #5b7d4e;
-  color: #ffffff;
+  background: var(--crimson);
+  color: var(--warm-white);
   font-weight: 600;
   cursor: pointer;
 }
 
 .register-button:hover {
-  background: #49673e;
+  background: var(--maple);
 }
 
 .register-error {
   margin: 0;
-  color: #8a2f2f;
+  color: var(--maple);
 }
 
 .register-link {
   display: inline-block;
   margin-top: 14px;
-  color: #4d6e41;
+  color: var(--crimson);
   font-weight: 600;
   text-decoration: none;
 }

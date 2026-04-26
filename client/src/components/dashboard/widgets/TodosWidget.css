@@ -14,7 +14,7 @@
 .todo-item {
   display: block;
   font-size: 0.7rem;
-  color: #2f3f2c;
+  color: var(--lagoon);
 }
 
 .todo-widget-actions {
@@ -39,7 +39,7 @@
   justify-content: center;
   border: 0;
   background: transparent;
-  color: #345f2f;
+  color: var(--moss);
   font-size: 0.54rem;
   line-height: 1;
   font-weight: 600;
@@ -88,9 +88,9 @@
   margin: 0;
   width: 12px;
   height: 12px;
-  border: 1px solid #9fb293;
+  border: 1px solid var(--border);
   border-radius: 3px;
-  background: #ffffff;
+  background: var(--warm-white);
   display: inline-grid;
   place-content: center;
   cursor: pointer;
@@ -101,7 +101,7 @@
   width: 6px;
   height: 6px;
   border-radius: 2px;
-  background: #4f7442;
+  background: var(--moss);
   transform: scale(0);
   transition: transform 120ms ease-in-out;
 }
@@ -118,7 +118,7 @@
 
 .todo-description {
   margin: 0 0 0 20px;
-  color: #566353;
+  color: var(--muted);
   font-size: 0.54rem;
   line-height: 1;
   font-weight: 500;
@@ -128,7 +128,7 @@
 }
 
 .todo-due {
-  color: #566353;
+  color: var(--muted);
   font-size: 0.54rem;
   line-height: 1;
   font-weight: 600;
@@ -163,13 +163,13 @@
 }
 
 .priority-high {
-  color: #cc3f3f;
+  color: var(--maple);
 }
 
 .priority-medium {
-  color: #c87a22;
+  color: var(--amber);
 }
 
 .priority-low {
-  color: #3e8e52;
+  color: var(--moss);
 }

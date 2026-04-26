@@ -3,28 +3,25 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background:
-    radial-gradient(circle at 14% 18%, #f3ebd7 0%, transparent 38%),
-    radial-gradient(circle at 84% 82%, #d4dfc5 0%, transparent 36%),
-    linear-gradient(180deg, #ece3cf 0%, #e1d8c3 100%);
+  background: var(--lagoon);
 }
 
 .dashboard-card {
   position: relative;
   width: 100%;
   max-width: 920px;
-  background: #f8f3e7;
-  border: 1px solid #c6d2b8;
+  background: var(--paper);
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 28px;
-  box-shadow: 0 14px 28px rgba(64, 87, 60, 0.18);
+  box-shadow: 0 14px 28px rgba(36, 53, 51, 0.18);
   text-align: left;
 }
 
 .dashboard-settings-link {
   display: inline-block;
   margin-bottom: 0;
-  color: #4d6e41;
+  color: var(--crimson);
   font-weight: 600;
   text-decoration: none;
 }
@@ -37,14 +34,14 @@
   border: none;
   border-radius: 8px;
   padding: 9px 12px;
-  background: #5b7d4e;
-  color: #ffffff;
+  background: var(--crimson);
+  color: var(--warm-white);
   font-weight: 600;
   cursor: pointer;
 }
 
 .dashboard-open-modal:hover {
-  background: #49673e;
+  background: var(--maple);
 }
 
 .dashboard-title {
@@ -52,7 +49,7 @@
   padding-right: 0;
   font-size: 1.9rem;
   line-height: 1.2;
-  color: #314f2b;
+  color: var(--lagoon);
 }
 
 .dashboard-header {
@@ -71,19 +68,20 @@
 }
 
 .dashboard-widget {
-  border: 1px solid #c6d2b8;
+  border: 1px solid var(--amber);
   border-radius: 10px;
-  background: #fdfaf2;
+  background: var(--surface);
   padding: 12px;
   height: 255px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 8px 18px rgba(36, 53, 51, 0.08);
 }
 
 .dashboard-widget-title {
   margin: 0 0 8px;
   font-size: 0.96rem;
-  color: #345f2f;
+  color: var(--moss);
 }
 
 .dashboard-widget-header {
@@ -99,7 +97,7 @@
 
 .dashboard-widget-placeholder {
   margin: 0;
-  color: #4f5d47;
+  color: var(--muted);
   font-size: 0.8rem;
 }
 
@@ -109,7 +107,7 @@
   overflow-y: auto;
   padding-right: 2px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(77, 110, 65, 0.45) transparent;
+  scrollbar-color: rgba(36, 53, 51, 0.35) transparent;
 }
 
 .dashboard-widget-content::-webkit-scrollbar {
@@ -121,13 +119,13 @@
 }
 
 .dashboard-widget-content::-webkit-scrollbar-thumb {
-  background: rgba(77, 110, 65, 0.45);
+  background: rgba(36, 53, 51, 0.35);
   border-radius: 999px;
 }
 
 .dashboard-error {
   margin: 0 0 12px;
-  color: #8a2f2f;
+  color: var(--maple);
   font-weight: 600;
 }
 
@@ -144,8 +142,8 @@
   height: 56px;
   border-radius: 999px;
   object-fit: cover;
-  border: 2px solid #c6d2b8;
-  background: #fdfaf2;
+  border: 2px solid var(--border);
+  background: var(--surface);
 }
 
 .dashboard-avatar-fallback {
@@ -154,9 +152,9 @@
   display: grid;
   place-items: center;
   border-radius: 999px;
-  border: 2px solid #c6d2b8;
-  background: #e4ecd9;
-  color: #345f2f;
+  border: 2px solid var(--border);
+  background: rgba(76, 86, 63, 0.16);
+  color: var(--moss);
   font-weight: 700;
 }
 
@@ -173,10 +171,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #c6d2b8;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #f7f2e4;
-  color: #345f2f;
+  background: var(--paper);
+  color: var(--moss);
   font-size: 0.68rem;
   padding: 4px 8px;
   cursor: pointer;
@@ -192,7 +190,7 @@
 
 .todo-add-btn:hover,
 .todo-edit-btn:hover {
-  background: #ebe4d2;
+  background: var(--surface-strong);
 }
 
 .todo-edit-icon {
@@ -235,7 +233,7 @@
 }
 
 .todo-modal-field label {
-  color: #345f2f;
+  color: var(--moss);
   font-size: 0.82rem;
   font-weight: 700;
   line-height: 1;
@@ -247,10 +245,10 @@
 .todo-modal-field select {
   box-sizing: border-box;
   width: 100%;
-  border: 1px solid #c6d2b8;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fdfaf2;
-  color: #2f3f2c;
+  background: var(--surface);
+  color: var(--lagoon);
   font: inherit;
   font-size: 0.88rem;
   padding: 9px 10px;
@@ -265,8 +263,8 @@
 .todo-modal-field textarea:focus,
 .todo-modal-field select:focus {
   outline: none;
-  border-color: #8fa984;
-  box-shadow: 0 0 0 3px rgba(143, 169, 132, 0.2);
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(183, 137, 83, 0.22);
 }
 
 .todo-modal-row {
@@ -283,7 +281,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #345f2f;
+  color: var(--moss);
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: lowercase;
@@ -295,9 +293,9 @@
   margin: 0;
   width: 12px;
   height: 12px;
-  border: 1px solid #9fb293;
+  border: 1px solid var(--border);
   border-radius: 3px;
-  background: #ffffff;
+  background: var(--warm-white);
   display: inline-grid;
   place-content: center;
   cursor: pointer;
@@ -308,7 +306,7 @@
   width: 6px;
   height: 6px;
   border-radius: 2px;
-  background: #4f7442;
+  background: var(--moss);
   transform: scale(0);
   transition: transform 120ms ease-in-out;
 }
@@ -319,10 +317,10 @@
 
 .todo-modal-submit-btn {
   justify-self: end;
-  border: 1px solid #4f7442;
+  border: 1px solid var(--moss);
   border-radius: 8px;
-  background: #5b7d4e;
-  color: #ffffff;
+  background: var(--crimson);
+  color: var(--warm-white);
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: lowercase;
@@ -332,7 +330,7 @@
 }
 
 .todo-modal-submit-btn:hover {
-  background: #49673e;
+  background: var(--maple);
 }
 
 .todo-modal-submit-btn:disabled {
