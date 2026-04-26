@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from "react";
 
 const API = import.meta.env.VITE_API;
@@ -101,7 +102,7 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    const bootAuth = async () => {
+    const loadStoredUser = async () => {
       const storedToken = localStorage.getItem(TOKEN_KEY);
 
       if (!storedToken) {
@@ -113,12 +114,14 @@ export function AuthProvider({ children }) {
         setToken(storedToken);
         await fetchCurrentUser(storedToken);
       } catch {
+        clearSession();
       } finally {
         setIsAuthLoading(false);
       }
     };
 
-    bootAuth();
+    loadStoredUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const value = {

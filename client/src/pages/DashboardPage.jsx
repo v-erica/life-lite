@@ -47,8 +47,6 @@ export default function Dashboard() {
   const name = user?.first_name ?? "there";
   const initials = (user?.first_name?.[0] ?? "U").toUpperCase();
 
-  if (isAuthLoading) return <main className="dashboard-page">Loading...</main>;
-
   //  Dashboard / General
   useEffect(() => {
     setShowImage(true);
@@ -515,6 +513,8 @@ export default function Dashboard() {
   }, [token]);
 
   const events = eventItems;
+
+  if (isAuthLoading) return <main className="dashboard-page">Loading...</main>;
 
   return (
     <main className="dashboard-page">

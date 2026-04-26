@@ -44,7 +44,7 @@ CREATE TABLE bills (
     id serial primary key,
     user_id int not null references users(id) on delete cascade,
     title text not null,
-    amount numeric(10,2) not null check (amount >= 0),
+    amount numeric(10,2) not null check (amount > 0),
     next_due_date date not null default current_date,
     recurrence text not null default 'monthly' check (recurrence in ('once', 'weekly', 'monthly', 'annually')),
     paid boolean not null default false,

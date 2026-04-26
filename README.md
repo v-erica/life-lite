@@ -77,12 +77,15 @@ The MVP for Life (Lite) focuses on a scoped set of features that centralize pers
 * Fields:
   * title
   * amount
-  * due month/day
-  * recurrence type (e.g., monthly, yearly)
-* Designed to surface upcoming bills based on month/day rather than full date history
+  * next due date
+  * recurrence type
+  * paid status
+  * last paid timestamp
+  * active/inactive status
+* Designed to surface upcoming bills from a concrete next due date, then advance that date automatically based on recurrence
 * Displays only the next upcoming occurrence
 * Supports create, edit, and delete
-* No payment tracking in MVP
+* Includes lightweight payment tracking so the app can mark a bill paid and calculate the next due date without storing full payment history in MVP
 
 ### Birthdays
 * Displays upcoming birthdays within the dashboard
@@ -317,13 +320,15 @@ bills
 - user_id (FK → users.id)
 - title
 - amount
-- due_month (1–12)
-- due_day (1–31)
-- recurrence (monthly | yearly)
+- next_due_date
+- recurrence (once | weekly | monthly | annually)
+- paid
+- last_paid_at
+- is_active
 - created_at
 - updated_at
 
-Note: Bills are stored using month + day rather than full dates to simplify recurring logic in MVP.
+Note: The original MVP plan stored bills using month + day only. During implementation, the bills model was intentionally expanded to use `next_due_date` plus recurrence and payment state. This keeps the dashboard simple while allowing the backend to automate date advancement after a bill is paid. `paid`, `last_paid_at`, and `is_active` are included so the app can distinguish unpaid upcoming bills, recently paid bills, and paused/cancelled subscriptions without exposing sensitive payment details or requiring a separate payment history table for MVP.
 
 #### Birthdays
 birthdays
@@ -457,7 +462,7 @@ PATCH  /api/bills/:id
 DELETE /api/bills/:id
 
 **Purpose**
-Supports creating, editing, listing, and deleting recurring financial obligations.
+Supports creating, editing, listing, deleting, and marking recurring financial obligations as paid. Bill records store the next concrete due date and recurrence settings so the server can automate future due dates after payment.
 **Tables Used**
 * bills
 
@@ -705,6 +710,7 @@ Instead of separate create/edit pages, most interactions will happen through sma
 #### Bills Widget
 * Shows upcoming recurring bills
 * Focuses on next upcoming occurrence only
+* Uses `next_due_date` as the source of truth for calendar placement and upcoming bill order
 
 #### Birthdays Widget
 * Displays upcoming birthdays
@@ -752,6 +758,7 @@ The SVG wireframe diagram above is the primary visual artifact for routes, page 
 ### Bills / Subscriptions
 * As a user, I want to track my recurring bills, so that I don’t miss upcoming payments.
 * As a user, I want to see the next upcoming due date for each bill, so that I can plan ahead.
+* As a user, I want to mark a bill as paid, so that Life Lite can move recurring bills forward without making me recreate them.
 
 ### Birthdays
 * As a user, I want to see upcoming birthdays, so that I can remember important dates for people in my life.

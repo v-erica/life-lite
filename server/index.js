@@ -4,12 +4,14 @@ import cors from "cors";
 import morgan from "morgan";
 import { verifyDbConnection } from "#db/connection";
 import getUserFromToken from "#middleware/getUserFromToken";
+import requireUser from "#middleware/requireUser";
 import db from "#db/client";
 
 import usersRouter from "./api/users.js";
 import dashboardRouter from "./api/dashboard.js";
 import todosRouter from "./api/todos.js";
 import eventsRouter from "./api/events.js";
+import billsRouter from "./api/bills.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -40,13 +42,15 @@ app.use(getUserFromToken);
 
 app.use("/users", usersRouter);
 
+app.use(requireUser);
+
 app.use("/dashboard", dashboardRouter);
 
 app.use("/todos", todosRouter);
 
 app.use("/events", eventsRouter);
 
-// todo: import bills router and set up app.use here
+app.use("/bills", billsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found." });
