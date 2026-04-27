@@ -21,13 +21,11 @@
   --social-bg: rgba(183, 137, 83, 0.16);
   --shadow: rgba(36, 53, 51, 0.18) 0 14px 28px;
 
-  --sans: Inter, Aptos, "SF Pro Text", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --heading: Inter, Aptos, "SF Pro Display", ui-sans-serif, system-ui,
-    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --sans: Calibri, "Segoe UI", Arial, sans-serif;
+  --heading: Calibri, "Segoe UI", Arial, sans-serif;
+  --mono: Calibri, "Segoe UI", Arial, sans-serif;
 
-  font: 18px/145% var(--sans);
+  font: 17px/145% var(--sans);
   letter-spacing: 0;
   color-scheme: light;
   color: var(--text);
@@ -38,7 +36,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 1024px) {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 
@@ -66,21 +64,21 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
+  font-size: 55px;
   letter-spacing: 0;
   margin: 32px 0;
   @media (max-width: 1024px) {
-    font-size: 36px;
+    font-size: 35px;
     margin: 20px 0;
   }
 }
 h2 {
-  font-size: 24px;
+  font-size: 23px;
   line-height: 118%;
   letter-spacing: 0;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: 19px;
   }
 }
 p {
@@ -96,7 +94,7 @@ code,
 }
 
 code {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
