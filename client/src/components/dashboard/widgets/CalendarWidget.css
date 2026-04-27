@@ -1,15 +1,18 @@
 .dashboard-widget-calendar .dashboard-widget-content {
   overflow: hidden;
   padding-right: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .dashboard-widget-calendar .react-calendar {
-  width: 100%;
+  width: var(--widget-rail-width);
+  margin: 0 auto;
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--moss);
-  font-size: 0.66rem;
+  color: var(--text-secondary);
+  font-size: 0.74rem;
   font-family: inherit;
   line-height: 1.2;
   padding: 0;
@@ -24,21 +27,23 @@
   height: 24px;
   border: 0;
   background: transparent;
-  color: var(--moss);
-  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  border-radius: 6px;
 }
 
 .dashboard-widget-calendar .react-calendar__navigation button:hover,
 .dashboard-widget-calendar
   .react-calendar__navigation
   button:enabled:focus-visible {
-  background: var(--surface-strong);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
 }
 
 .dashboard-widget-calendar .react-calendar__month-view__weekdays {
   text-transform: lowercase;
-  font-size: 0.52rem;
-  color: var(--muted);
+  font-size: 0.6rem;
+  color: var(--accent-calendar);
 }
 
 .dashboard-widget-calendar .react-calendar__month-view__weekdays__weekday {
@@ -51,7 +56,7 @@
   padding: 2px 2px 10px;
   border-radius: 6px;
   background: transparent;
-  color: var(--lagoon);
+  color: var(--text-primary);
 }
 
 .calendar-tile-indicators {
@@ -71,66 +76,67 @@
 }
 
 .calendar-tile-dot-todo {
-  background: var(--moss);
+  background: var(--accent-todos);
 }
 
 .calendar-tile-dot-bill {
-  background: var(--amber);
+  background: var(--accent-bills);
 }
 
 .calendar-tile-dot-event {
-  background: var(--crimson);
+  background: var(--accent-events);
 }
 
 .calendar-tile-dot-birthday {
-  background: var(--maple);
+  background: var(--accent-birthdays);
 }
 
 .calendar-tile-overflow {
   font-size: 0.46rem;
   line-height: 1;
-  color: var(--muted);
+  color: var(--text-muted);
   transform: translateY(-1px);
 }
 
 .dashboard-widget-calendar .react-calendar__tile--active .calendar-tile-dot-todo {
-  background: #d6c39f;
+  background: #ece7de;
 }
 
 .dashboard-widget-calendar .react-calendar__tile--active .calendar-tile-dot-bill {
-  background: #e3c182;
+  background: #d8ebff;
 }
 
 .dashboard-widget-calendar .react-calendar__tile--active .calendar-tile-dot-event {
-  background: #c98670;
+  background: #f0ddc9;
 }
 
 .dashboard-widget-calendar
   .react-calendar__tile--active
   .calendar-tile-dot-birthday {
-  background: #b8796c;
+  background: #ffd3df;
 }
 
 .dashboard-widget-calendar .react-calendar__tile--active .calendar-tile-overflow {
-  color: var(--warm-white);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .dashboard-widget-calendar .react-calendar__tile:hover,
 .dashboard-widget-calendar .react-calendar__tile:focus-visible {
-  background: var(--surface-strong);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .dashboard-widget-calendar .react-calendar__tile--now {
-  background: rgba(76, 86, 63, 0.16);
-  color: var(--moss);
+  background: rgba(155, 124, 255, 0.14);
+  color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px rgba(155, 124, 255, 0.48);
 }
 
 .dashboard-widget-calendar .react-calendar__tile--active,
 .dashboard-widget-calendar .react-calendar__tile--active:hover {
-  background: var(--crimson);
-  color: var(--warm-white);
+  background: var(--accent-calendar);
+  color: #f8f8ff;
 }
 
 .dashboard-widget-calendar .react-calendar__month-view__days__day--neighboringMonth {
-  color: #928878;
+  color: rgba(163, 170, 180, 0.4);
 }

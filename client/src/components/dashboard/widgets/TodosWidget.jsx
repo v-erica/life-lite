@@ -14,36 +14,6 @@ export default function TodosWidget({
       <div className="dashboard-widget-header">
         <h2 className="dashboard-widget-title">To-Dos</h2>
         <div className="todo-widget-actions">
-          <div className="todo-filter-group">
-            <button
-              type="button"
-              className={`todo-filter-btn ${todoFilter === "today" ? "is-active" : ""}`}
-              onClick={() => setTodoFilter("today")}
-            >
-              today
-            </button>
-            <button
-              type="button"
-              className={`todo-filter-btn ${todoFilter === "week" ? "is-active" : ""}`}
-              onClick={() => setTodoFilter("week")}
-            >
-              week
-            </button>
-            <button
-              type="button"
-              className={`todo-filter-btn ${todoFilter === "all" ? "is-active" : ""}`}
-              onClick={() => setTodoFilter("all")}
-            >
-              all
-            </button>
-            <button
-              type="button"
-              className={`todo-filter-btn ${todoFilter === "completed" ? "is-active" : ""}`}
-              onClick={() => setTodoFilter("completed")}
-            >
-              completed
-            </button>
-          </div>
           <button
             type="button"
             className="todo-add-btn"
@@ -52,6 +22,36 @@ export default function TodosWidget({
             +
           </button>
         </div>
+      </div>
+      <div className="todo-filter-group">
+        <button
+          type="button"
+          className={`todo-filter-btn ${todoFilter === "today" ? "is-active" : ""}`}
+          onClick={() => setTodoFilter("today")}
+        >
+          today
+        </button>
+        <button
+          type="button"
+          className={`todo-filter-btn ${todoFilter === "week" ? "is-active" : ""}`}
+          onClick={() => setTodoFilter("week")}
+        >
+          week
+        </button>
+        <button
+          type="button"
+          className={`todo-filter-btn ${todoFilter === "all" ? "is-active" : ""}`}
+          onClick={() => setTodoFilter("all")}
+        >
+          all
+        </button>
+        <button
+          type="button"
+          className={`todo-filter-btn ${todoFilter === "completed" ? "is-active" : ""}`}
+          onClick={() => setTodoFilter("completed")}
+        >
+          completed
+        </button>
       </div>
 
       <div className="dashboard-widget-content">

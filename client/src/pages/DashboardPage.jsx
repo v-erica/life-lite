@@ -34,6 +34,11 @@ export default function Dashboard() {
     start_time: "",
     end_time: "",
   };
+  const emptyBillForm = {
+    title: "",
+    amount: 0.0,
+    next_due_date: "",
+  };
   const [eventForm, setEventForm] = useState(emptyEventForm);
   const [eventFormError, setEventFormError] = useState(null);
   const [isEventSubmitting, setIsEventSubmitting] = useState(false);
@@ -242,7 +247,10 @@ export default function Dashboard() {
       eventForm.event_date,
       eventForm.start_time,
     );
-    const endDateTime = combineEventDateTime(eventForm.event_date, eventForm.end_time);
+    const endDateTime = combineEventDateTime(
+      eventForm.event_date,
+      eventForm.end_time,
+    );
 
     if (eventForm.start_time && !startDateTime) {
       return "Start time is invalid.";
@@ -273,7 +281,10 @@ export default function Dashboard() {
       title: eventForm.title.trim(),
       description: eventForm.description.trim() || null,
       event_date: eventForm.event_date,
-      start_time: combineEventDateTime(eventForm.event_date, eventForm.start_time),
+      start_time: combineEventDateTime(
+        eventForm.event_date,
+        eventForm.start_time,
+      ),
       end_time: combineEventDateTime(eventForm.event_date, eventForm.end_time),
     };
 
@@ -551,7 +562,7 @@ export default function Dashboard() {
             </Link>
           </div>
         </header>
-        {isDashboardLoading && <p>Loading dashboard data...</p>}
+        {isDashboardLoading && <p>loading dashboard data...</p>}
         {dashboardError && (
           <p role="alert" className="dashboard-error">
             {dashboardError}
@@ -618,13 +629,88 @@ export default function Dashboard() {
             );
           })}
         </section>
+        <p className="dashboard-footer">more features coming soon.</p>
       </section>
       <Modal
         isOpen={isModalOpen}
         title={modalMode === "edit" ? "Edit Item" : "Create Item"}
         onClose={closeModal}
       >
-        {activeWidget === "Events" ? (
+        {activeWidget === "Bills" ? (
+          <form className="bill-modal-form" onSubmit={submitBillForm}>
+            <div className="todo-modal-field">
+              <label htmlFor="bill-title">Title</label>
+              <input
+                id="bill-title"
+                name="title"
+                value={billForm.title}
+                onChange={handleBillFieldChange}
+              />
+            </div>
+
+            <div className="todo-modal-field">
+              <label htmlFor="bill-amount">Amount</label>
+              <textarea
+                id="bill-amount"
+                name="amount"
+                value={billForm.amount}
+                onChange={handleBillFieldChange}
+              />
+            </div>
+
+            <div className="todo-modal-row">
+              <div className="todo-modal-field">
+                <label htmlFor="bill-date">Next Due Date</label>
+                <input
+                  type="date"
+                  id="bill-date"
+                  name="next_due_date"
+                  value={billForm.next_due_date}
+                  onChange={handleBillFieldChange}
+                />
+              </div>
+              <div className="todo-modal-field">
+                <label htmlFor="bill-start">Start Time</label>
+                <input
+                  type="time"
+                  id="bill-start"
+                  name="start_time"
+                  value={billForm.start_time}
+                  onChange={handleBillFieldChange}
+                />
+              </div>
+            </div>
+
+            <div className="todo-modal-field">
+              <label htmlFor="bill-end">End Time</label>
+              <input
+                type="time"
+                id="bill-end"
+                name="end_time"
+                value={billForm.end_time}
+                onChange={handleBillFieldChange}
+              />
+            </div>
+
+            <button
+              className="todo-modal-submit-btn"
+              type="submit"
+              disabled={isBillSubmitting}
+            >
+              {isBillSubmitting
+                ? "Saving..."
+                : modalMode === "edit"
+                  ? "Save changes"
+                  : "Create bill"}
+            </button>
+
+            {billFormError && (
+              <p role="alert" className="dashboard-error">
+                {billFormError}
+              </p>
+            )}
+          </form>
+        ) : activeWidget === "Events" ? (
           <form className="event-modal-form" onSubmit={submitEventForm}>
             <div className="todo-modal-field">
               <label htmlFor="event-title">Title</label>

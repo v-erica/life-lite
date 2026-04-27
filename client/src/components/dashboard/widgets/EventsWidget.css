@@ -1,26 +1,36 @@
 .dashboard-widget-events .dashboard-widget-header {
   padding-right: 2px;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .event-list {
-  margin: 0;
+  width: var(--widget-rail-width);
+  margin: 0 auto;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 10px;
+  gap: 0;
 }
 
 .event-item {
   display: block;
   font-size: 0.7rem;
-  color: var(--lagoon);
+  color: var(--text-primary);
+  padding: 0 2px 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.event-list .event-item:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .event-content {
   min-width: 0;
   display: grid;
-  row-gap: 3px;
+  row-gap: 5px;
 }
 
 .event-top-row {
@@ -39,9 +49,9 @@
 
 .event-description {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.54rem;
-  line-height: 1;
+  line-height: 1.25;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -57,7 +67,7 @@
 
 .event-date,
 .event-time {
-  color: var(--muted);
+  color: var(--text-secondary);
   font-size: 0.54rem;
   line-height: 1;
   font-weight: 600;
